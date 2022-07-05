@@ -1,4 +1,4 @@
-package T01WorkingWithAbstraction.Lab;
+package T01WorkingWithAbstraction.Lab.P01RhombusOfStars;
 
 import java.util.Scanner;
 
