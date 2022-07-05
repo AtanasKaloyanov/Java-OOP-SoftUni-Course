@@ -13,9 +13,6 @@ public class Rectangle {
         boolean containsOnX = point.getX() >= bottomLeft.getX() && point.getX() <= topRight.getX();
         boolean containsOnY = point.getY() >= bottomLeft.getY() && point.getY() <= topRight.getY();
 
-        if (containsOnX && containsOnY) {
-            return true;
-        }
-        return false;
+        return containsOnX && containsOnY;
     }
 }
