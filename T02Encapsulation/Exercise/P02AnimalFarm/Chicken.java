@@ -35,6 +35,10 @@ public class Chicken {
     }
 
     public double productPerDay() {
+       return calculateProductPerDay();
+    }
+
+    private double calculateProductPerDay() {
         double eggs;
         if (this.age <= 5) {
             eggs = 2;
@@ -45,10 +49,6 @@ public class Chicken {
         }
 
         return eggs;
-    }
-
-    private double calculateProductPerDay() {
-        return this.age * 360 * productPerDay();
     }
 
 
