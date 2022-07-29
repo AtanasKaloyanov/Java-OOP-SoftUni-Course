@@ -1,37 +1,36 @@
 package T07ReflectionAndAnnotation.Exercise.P01HarvestingFields;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+    private static final String END_COMMAND = "HARVEST";
+    private static final String PRIVATE_FIELD = "private";
+    private static final String PUBLIC_FIELD = "public";
+    private static final String PROTECTED_FIELD = "protected";
+
+
     public static void main(String[] args) {
         Class clazz = RichSoilLand.class;
         Field[] allFileds = clazz.getDeclaredFields();
 
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input;
 
-        while (!input.equals("HARVEST")) {
+        while (!END_COMMAND.equals(input = scanner.nextLine())) {
             switch (input) {
-                case "private":
-                    Arrays.stream(allFileds)
-                            .filter(field -> Modifier.isPrivate(field.getModifiers()))
-                            .forEach(field -> System.out.printf("private %s %s%n", field.getType().getSimpleName(), field.getName()));
+                case PRIVATE_FIELD:
+                  print(allFileds, PRIVATE_FIELD);
                     break;
 
                 case "protected":
-                    Arrays.stream(allFileds)
-                            .filter(field -> Modifier.isProtected(field.getModifiers()))
-                            .forEach(field -> System.out.printf("protected %s %s%n", field.getType().getSimpleName(), field.getName()));
+                 print(allFileds, PROTECTED_FIELD);
                     break;
 
                 case "public":
-                    Arrays.stream(allFileds)
-                            .filter(field -> Modifier.isPublic(field.getModifiers()))
-                            .forEach(field -> System.out.printf("public %s %s%n", field.getType().getSimpleName(), field.getName()));
+                    print(allFileds, PUBLIC_FIELD);
                     break;
 
                 case "all":
@@ -51,6 +50,14 @@ public class Main {
 
             input = scanner.nextLine();
         }
+
+        scanner.close();
+    }
+
+    public static void print(Field[] fields, String modifier) {
+        Arrays.stream(fields)
+                .filter(field -> Modifier.toString(field.getModifiers()).equals(modifier))
+                .forEach(field -> System.out.printf("%s %s %s%n", Modifier.toString(field.getModifiers()), field.getType().getSimpleName(), field.getName()));
     }
 
 }
