@@ -1,4 +1,4 @@
-package T08ExceptionAndErrorHandling.P01;
+package T08ExceptionAndErrorHandling;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -7,7 +7,7 @@ public class P01NumberInRange {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int[] range = Arrays.stream(scanner.nextLine().split("\s+"))
+        int[] range = Arrays.stream(scanner.nextLine().split(" "))
                 .mapToInt(Integer::parseInt)
                 .toArray();
 
@@ -23,13 +23,13 @@ public class P01NumberInRange {
                 if (number >= start && number <= end) {
                     System.out.printf("Valid number: %d%n", number);
                     return;
-                } else {
-                    System.out.printf("Invalid number: %s%n", input);
                 }
 
             } catch (Exception exception) {
-                System.out.printf("Invalid number: %s%n", input);
+
             }
+
+            System.out.printf("Invalid number: %s%n", input);
             input = scanner.nextLine();
         }
     }
