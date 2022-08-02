@@ -1,6 +1,6 @@
 package PRpg;
 
-public class Dummy {
+public class Dummy implements Target{
 
     private int health;
     private int experience;
