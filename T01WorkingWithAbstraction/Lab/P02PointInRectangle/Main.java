@@ -5,30 +5,34 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. Points of the rectangle reading and creating a rectangle
+        // via them:
         Scanner scanner = new Scanner(System.in);
-        int[] array = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-        int bottomLeffX = array[0];
-        int bottomLeffY = array[1];
+        int[] array = readArray(scanner);
+        int xMin = array[0];
+        int yMin = array[1];
+        int xMax = array[2];
+        int yMax = array[3];
+        Rectangle rect = new Rectangle(xMin, yMin, xMax, yMax);
 
-        Point bottomLeft = new Point(bottomLeffX, bottomLeffY);
+        // 2. Number n reading, then, n points creating via for cycle
+        // and checking via the method contains if the current point is in the
+        // rectangle:
+        int n = Integer.parseInt(scanner.nextLine());
 
-        int topRightX = array[2];
-        int topRightY = array[3];
-
-        Point topRight = new Point(topRightX, topRightY);
-
-        Rectangle rectangle = new Rectangle(bottomLeft, topRight);
-
-        int number = Integer.parseInt(scanner.nextLine());
-
-        for (int i = 1; i <= number ; i++) {
-            int[] givenCordinates = Arrays.stream(scanner.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            int xCodinate = givenCordinates[0];
-            int yCordinate = givenCordinates[1];
-
-            Point currentPoint = new Point(xCodinate, yCordinate);
-
-            System.out.println(rectangle.contains(currentPoint));
+        for (int i = 0; i < n; i++) {
+            int[] coordinates = readArray(scanner);
+            int xCoord = coordinates[0];
+            int yCoord = coordinates[1];
+            Point point = new Point(xCoord, yCoord);
+            boolean isInTheRect = rect.contains(point);
+            System.out.println(isInTheRect);
         }
+    }
+
+    private static int[] readArray(Scanner scanner) {
+        return Arrays.stream(scanner.nextLine().split(" "))
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 }
