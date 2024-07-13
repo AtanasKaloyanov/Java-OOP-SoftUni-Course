@@ -1,17 +1,17 @@
 package T01WorkingWithAbstraction.Lab.P04HotelReservation;
 
-public enum DiscountType {
-    None(0),
+public enum Discount {
+    VIP(20),
     SecondVisit(10),
-    VIP(20);
+    None(0);
 
     private int discount;
 
-    DiscountType(int discount) {
+    Discount(int discount) {
         this.discount = discount;
     }
 
     public int getDiscount() {
-        return discount;
+        return this.discount;
     }
 }

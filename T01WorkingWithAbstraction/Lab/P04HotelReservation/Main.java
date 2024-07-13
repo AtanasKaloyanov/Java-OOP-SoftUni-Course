@@ -5,14 +5,12 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String[] input = scanner.nextLine().split(" ");
-
-        double pricePerDay = Double.parseDouble(input[0]);
-        int numberOfDays = Integer.parseInt(input[1]);
-        Season givenSeason = Season.valueOf(input[2]);
-        DiscountType givenDiscountType = DiscountType.valueOf(input[3]);
-
-        double finalPrice = PriceCalculator.calculateFinalPrice(pricePerDay, numberOfDays, givenSeason, givenDiscountType);
-        System.out.printf("%.2f", finalPrice);
+        String[] array = scanner.nextLine().split(" ");
+        double price = Double.parseDouble(array[0]);
+        int days = Integer.parseInt(array[1]);
+        Discount discount = Discount.valueOf(array[3]);
+        Season season = Season.valueOf(array[2]);
+        double totalSum = PriceCalculator.calculateHoliday(price, days, discount, season);
+        System.out.printf("%.2f", totalSum);
     }
 }

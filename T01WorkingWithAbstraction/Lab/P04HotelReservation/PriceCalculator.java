@@ -1,10 +1,12 @@
 package T01WorkingWithAbstraction.Lab.P04HotelReservation;
 
 public class PriceCalculator {
-    public static double calculateFinalPrice(double pricePerDay, int numberOfDays, Season season, DiscountType discountType) {
-        double price = pricePerDay * numberOfDays;
-        price = price * season.getMultiplier();
-        price = price * (100 - discountType.getDiscount()) / 100.0;
-        return price;
+    public static double calculateHoliday(double pricePerDay, int days, Discount discount, Season season) {
+        int discountPerc = discount.getDiscount();
+        double pricePerDayWithDisc = pricePerDay - pricePerDay * (discountPerc * 1.0 / 100);
+        pricePerDayWithDisc *= days;
+        int multiplier = season.getMultiplyN();
+        pricePerDayWithDisc *= multiplier;
+        return pricePerDayWithDisc;
     }
 }

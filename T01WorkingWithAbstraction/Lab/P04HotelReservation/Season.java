@@ -1,18 +1,18 @@
 package T01WorkingWithAbstraction.Lab.P04HotelReservation;
 
 public enum Season {
-    Autumn(1),
     Spring(2),
-    Winter(3),
-    Summer(4);
+    Summer(4),
+    Autumn(1),
+    Winter(3);
 
-    private int multiplier;
+    private int multiplyN;
 
-    Season(int multiplier) {
-        this.multiplier = multiplier;
+    Season(int multiplyN) {
+        this.multiplyN = multiplyN;
     }
 
-    public int getMultiplier() {
-        return multiplier;
+    public int getMultiplyN() {
+        return this.multiplyN;
     }
 }
