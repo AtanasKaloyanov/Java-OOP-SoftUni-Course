@@ -11,31 +11,24 @@ public class Student {
         this.grade = grade;
     }
 
-    public String getName() {
-        return this.name;
+    public String getCommentary() {
+        String result;
+        if (this.grade >= 5.00) {
+            result = "Excellent student";
+        } else if (this.grade >= 3.50) {
+            result = "Average student";
+        } else {
+            result = "Very nice person";
+        }
+        return result;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return this.age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public double getGrade() {
-        return this.grade;
-    }
-
-    public void setGrade(double grade) {
-        this.grade = grade;
-    }
-
+    @Override
     public String toString() {
-        return String.format("%s is %s years old.", getName(), getAge());
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.name).append(" is ")
+                .append(this.age).append(" years old. ")
+                .append(this.getCommentary()).append(".");
+        return sb.toString();
     }
 }
