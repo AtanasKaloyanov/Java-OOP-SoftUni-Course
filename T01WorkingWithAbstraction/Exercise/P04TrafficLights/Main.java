@@ -6,24 +6,24 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. Input reading -  Colors and n:
         Scanner scanner = new Scanner(System.in);
+        List<Color> colorList = readList(scanner);
+        int n = Integer.parseInt(scanner.nextLine());
 
-        String[] colors = scanner.nextLine().split("\\s+");
-        int numberChanges = Integer.parseInt(scanner.nextLine());
+        // 2. Creating object of type TrafficLight and
+        TrafficLight trafficLight = new TrafficLight(colorList);
+        trafficLight.changeColors(n);
+    }
 
-        List<Light> trafficLight = new ArrayList<>();
-
-        for (String color : colors) {
-            Light light = new Light(Color.valueOf(color));
-            trafficLight.add(light);
+    private static List<Color> readList(Scanner scanner) {
+        List<Color> colors = new ArrayList<>();
+        String line = scanner.nextLine();
+        String[] colorText = line.split(" ");
+        for (String t : colorText) {
+            Color color = Color.valueOf(t);
+            colors.add(color);
         }
-
-        for (int i = 1; i <= numberChanges ; i++) {
-            trafficLight.forEach(element -> {
-                element.changeColor();
-                System.out.print(element.getColor() + " ");
-            });
-            System.out.println();
-        }
+        return colors;
     }
 }
