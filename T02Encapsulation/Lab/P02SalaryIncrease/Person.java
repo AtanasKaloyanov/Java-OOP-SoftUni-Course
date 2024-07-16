@@ -1,7 +1,5 @@
 package T02Encapsulation.Lab.P02SalaryIncrease;
 
-import java.text.DecimalFormat;
-
 public class Person {
     private String firstName;
     private String lastName;
@@ -15,8 +13,19 @@ public class Person {
         this.salary = salary;
     }
 
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public int getAge() {
+        return this.age;
+    }
     public double getSalary() {
-        return salary;
+        return this.salary;
     }
 
     public void setSalary(double salary) {
@@ -24,16 +33,18 @@ public class Person {
     }
 
     public void increaseSalary(double bonus) {
-        if (this.age >= 30) {
-            this.salary = this.salary + this.salary * bonus / 100;
-        } else {
-            this.salary = this.salary + this.salary * bonus / 100 / 2;
+        if (this.getAge() < 30) {
+            bonus /= 2;
         }
+
+        double percentage = bonus / 100;
+        double newSalary = this.getSalary() + percentage * this.getSalary() ;
+        this.setSalary(newSalary);
     }
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("0.#######");
-        return String.format("%s %s gets %s leva", this.firstName, this.lastName, df.format(this.salary));
+        return String.format("%s %s gets %s leva",
+                this.getFirstName(), this.getLastName(), this.getSalary());
     }
 }
