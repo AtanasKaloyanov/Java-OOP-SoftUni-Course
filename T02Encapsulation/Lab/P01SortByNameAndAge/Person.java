@@ -12,7 +12,7 @@ public class Person {
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public String getLastName() {
@@ -25,6 +25,6 @@ public class Person {
 
     @Override
     public String toString() {
-        return String.format("%s %s is %d years old.", this.firstName, this.lastName, this.age);
+        return String.format("%s %s is %d years old.", getFirstName(), getLastName(), getAge());
     }
 }
