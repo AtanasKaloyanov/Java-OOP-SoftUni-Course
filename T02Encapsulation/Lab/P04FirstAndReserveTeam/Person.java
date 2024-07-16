@@ -1,7 +1,5 @@
 package T02Encapsulation.Lab.P04FirstAndReserveTeam;
 
-import java.text.DecimalFormat;
-
 public class Person {
     private String firstName;
     private String lastName;
@@ -9,14 +7,14 @@ public class Person {
     private double salary;
 
     public Person(String firstName, String lastName, int age, double salary) {
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-        this.setAge(age);
-        this.setSalary(salary);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setAge(age);
+        setSalary(salary);
     }
 
-    public double getSalary() {
-        return salary;
+    public String getFirstName() {
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -24,6 +22,10 @@ public class Person {
             throw new IllegalArgumentException("First name cannot be less than 3 symbols");
         }
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -34,7 +36,7 @@ public class Person {
     }
 
     public int getAge() {
-        return age;
+        return this.age;
     }
 
     public void setAge(int age) {
@@ -42,6 +44,10 @@ public class Person {
             throw new IllegalArgumentException("Age cannot be zero or negative integer");
         }
         this.age = age;
+    }
+
+    public double getSalary() {
+        return this.salary;
     }
 
     public void setSalary(double salary) {
@@ -52,16 +58,18 @@ public class Person {
     }
 
     public void increaseSalary(double bonus) {
-        if (this.age >= 30) {
-            this.salary = this.salary + this.salary * bonus / 100;
-        } else {
-            this.salary = this.salary + this.salary * bonus / 100 / 2;
+        if (this.getAge() < 30) {
+            bonus /= 2;
         }
+
+        double percentage = bonus / 100;
+        double newSalary = this.getSalary() + percentage * this.getSalary() ;
+        this.setSalary(newSalary);
     }
 
     @Override
     public String toString() {
-        DecimalFormat df = new DecimalFormat("0.#######");
-        return String.format("%s %s gets %s leva", this.firstName, this.lastName, df.format(this.salary));
+        return String.format("%s %s gets %s leva",
+                this.getFirstName(), this.getLastName(), this.getSalary());
     }
 }
