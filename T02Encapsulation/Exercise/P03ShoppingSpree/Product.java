@@ -9,20 +9,18 @@ public class Product {
         setCost(cost);
     }
 
-    private void setName(String name) {
-        if (name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty");
-        } else {
-            this.name = name;
-        }
-    }
-
     private void setCost(double cost) {
-        if (cost >= 0) {
-            this.cost = cost;
-        } else {
+        if (cost < 0) {
             throw new IllegalArgumentException("Money cannot be negative");
         }
+        this.cost = cost;
+    }
+
+    private void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        this.name = name;
     }
 
     public String getName() {
@@ -35,6 +33,18 @@ public class Product {
 
     @Override
     public String toString() {
-        return String.format("%s", this.name);
+        return this.name;
     }
 }
+
+/*
+
+-	name: String
+-	cost: double
++ 	Product (String,  double)
+-	setCost (double): void
+-	setName (String): void
++	getName(): String
++	getCost (): double
+
+ */
