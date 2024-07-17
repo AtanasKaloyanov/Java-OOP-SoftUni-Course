@@ -1,40 +1,40 @@
 package T02Encapsulation.Exercise.P04PizzaCalories;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Pizza {
     private String name;
     private Dough dough;
-    private List<Topping> toppings;
+    private List<Topping> toppings = new ArrayList<>();
 
     public Pizza(String name, int numberOfToppings) {
         setName(name);
         setToppings(numberOfToppings);
     }
 
-    private void setToppings(int number) {
-        if (number >= 0 && number <= 10) {
-            this.toppings = new ArrayList<>(number);
-        } else {
+    private void setToppings(int numberOfToppings) {
+        if (numberOfToppings < 0 || numberOfToppings > 10) {
             throw new IllegalArgumentException("Number of toppings should be in range [0..10].");
         }
     }
 
     private void setName(String name) {
-        if (name.trim().length() >= 1 && name.trim().length() <= 15) {
-            this.name = name;
-        } else {
+        if (name == null || name.trim().isEmpty() || name.length() > 15) {
             throw new IllegalArgumentException("Pizza name should be between 1 and 15 symbols.");
         }
+        this.name = name;
     }
 
-    public void setDough(Dough dough) {
-        this.dough = dough;
+    public void setDough(Dough dought) {
+        this.dough = dought;
     }
+
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void addTopping(Topping topping) {
@@ -42,12 +42,16 @@ public class Pizza {
     }
 
     public double getOverallCalories() {
-
-        return this.dough.calculateCalories() + this.toppings.stream().mapToDouble(e -> e.calculateCalories()).sum();
+        double totalCal = 0;
+        totalCal += this.dough.calculateCalories();
+        for (Topping topping : this.toppings) {
+            totalCal += topping.calculateCalories();
+        }
+        return totalCal;
     }
 
     @Override
     public String toString() {
-        return String.format("%s - %.2f", this.name, getOverallCalories());
+        return String.format("%s - %.2f", this.name, this.getOverallCalories());
     }
 }
