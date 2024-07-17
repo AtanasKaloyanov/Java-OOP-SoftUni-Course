@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-
+        // 1. Input reading - name and age:
         Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        int age = Integer.parseInt(scanner.nextLine());
 
-        String chickensName = scanner.nextLine();
-        int chickensAge = Integer.parseInt(scanner.nextLine());
-
-        Chicken chicken = new Chicken(chickensName, chickensAge);
-
+        // 2. Creating an object of the class Chicken
+        // and printing it:
+        Chicken chicken = new Chicken(name, age);
         System.out.println(chicken);
     }
 }
