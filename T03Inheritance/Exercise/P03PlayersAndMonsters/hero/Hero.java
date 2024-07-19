@@ -1,4 +1,4 @@
-package T03Inheritance.Exercise.P03PlayersAndMonsters;
+package T03Inheritance.Exercise.P03PlayersAndMonsters.hero;
 
 public class Hero {
     private String username;
@@ -19,6 +19,9 @@ public class Hero {
 
     @Override
     public String toString() {
-        return String.format("Type: %s Username: %s Level: %s", this.getClass().getName(), this.getUsername(), this.getLevel());
+        return String.format("Type: %s Username: %s Level: %s",
+                this.getClass().getName(),
+                this.getUsername(),
+                this.getLevel());
     }
 }
