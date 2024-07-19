@@ -4,15 +4,13 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        // 1. Input reading
+        Scanner scanner = new Scanner(System.in);
+        String name = scanner.nextLine();
+        int age = Integer.parseInt(scanner.nextLine());
 
-        String name = sc.nextLine();
-        int age = Integer.parseInt(sc.nextLine());
-
+        // 2. Creating an object of type Child and printing it:
         Child child = new Child(name, age);
-
-        System.out.println(child.getName());
-        System.out.println(child.getAge());
+        System.out.println(child);
     }
-
 }
