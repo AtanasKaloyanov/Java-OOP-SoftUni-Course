@@ -1,4 +1,4 @@
-package T03Inheritance.Lab.P03HierarchicaInheritance;
+package T03Inheritance.Lab.P02HierarchicaInheritance;
 
 public class Animal {
     public void eat() {

@@ -1,6 +1,4 @@
-package T03Inheritance.Lab.P03HierarchicaInheritance;
-
-import T03Inheritance.Lab.P01SingleInheritance.Animal;
+package T03Inheritance.Lab.P02HierarchicaInheritance;
 
 public class Dog extends Animal {
     public void bark() {
