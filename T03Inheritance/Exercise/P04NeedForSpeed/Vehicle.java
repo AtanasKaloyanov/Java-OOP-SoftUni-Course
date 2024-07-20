@@ -1,15 +1,22 @@
 package T03Inheritance.Exercise.P04NeedForSpeed;
 
 public class Vehicle {
-    private final static double DEFAULT_fUEL_CONSUMPTION = 1.25;
+    private final static double DEFAULT_FUEL_CONSUMPTION = 1.25;
     private double fuelConsumption;
     private double fuel;
     private int horsePower;
 
     public Vehicle(double fuel, int horsePower) {
-        this.fuelConsumption = DEFAULT_fUEL_CONSUMPTION;
-        this.fuel = fuel;
-        this.horsePower = horsePower;
+        setFuel(fuel);
+        setHorsePower(horsePower);
+        setFuelConsumption(DEFAULT_FUEL_CONSUMPTION);
+    }
+
+    public void drive(double kilometers) {
+        double neededFuel = this.fuelConsumption * kilometers;
+        if (this.fuel >= neededFuel) {
+            this.fuel -= neededFuel;
+        }
     }
 
     public double getFuelConsumption() {
@@ -34,13 +41,5 @@ public class Vehicle {
 
     public void setHorsePower(int horsePower) {
         this.horsePower = horsePower;
-    }
-
-    public void drive(double kilometers) {
-        double neededFuel = kilometers * this.fuelConsumption;
-
-        if (neededFuel <= this.fuel) {
-            this.fuel -= neededFuel;
-        }
     }
 }

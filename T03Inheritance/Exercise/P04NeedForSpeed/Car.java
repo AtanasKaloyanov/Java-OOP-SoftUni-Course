@@ -7,6 +7,4 @@ public class Car extends Vehicle{
         super(fuel, horsePower);
         super.setFuelConsumption(DEFAULT_FUEL_CONSUMPTION);
     }
-
-
 }
