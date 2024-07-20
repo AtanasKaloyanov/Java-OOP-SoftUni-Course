@@ -2,7 +2,7 @@ package T03Inheritance.Exercise.P05Restaurant;
 
 import java.math.BigDecimal;
 
-public class Dessert extends Food{
+public class Dessert extends Food {
     private double calories;
 
     public Dessert(String name, BigDecimal price, double grams, double calories) {

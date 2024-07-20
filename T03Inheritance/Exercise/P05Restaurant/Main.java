@@ -1,7 +1,15 @@
 package T03Inheritance.Exercise.P05Restaurant;
 
-import java.math.BigDecimal;
-
 public class Main {
+ /*
+                                          Product
 
+                    Beverage                                     Food
+
+       HotBeverage        ColdBeverage                 Starter  MainDish  Dessert
+
+     Coffee    Tea                                      Soup     Salmon    Cake
+
+
+                        */
 }
