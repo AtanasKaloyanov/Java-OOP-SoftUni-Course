@@ -1,42 +1,39 @@
 package T04InterfacesAndAbstraction.Lab.P05BorderControl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. Input reading and Set initialization:
         Scanner scanner = new Scanner(System.in);
-        List<Identifiable> list = new ArrayList<>();
+        String line = scanner.nextLine();
+        Set<Identifiable> identifiables = new LinkedHashSet<>();
 
-        String input = scanner.nextLine();
-        while (!input.equals("End")) {
-            String[] array = input.split(" ");
-            if (array.length == 2) {
-                String model = array[0];
-                String id = array[1];
-
-                Identifiable robot = new Robot(model, id);
-                list.add(robot);
-            } else {
+        // 2. While cycle:
+        while (!line.equals("End")) {
+            String id;
+            Identifiable identifiable = null;
+            String[] array = line.split(" ");
+            if (array.length == 3) {
                 String name = array[0];
                 int age = Integer.parseInt(array[1]);
-                String id = array[2];
+                id = array[2];
 
-                Identifiable human = new Citizen(name, age, id);
-                list.add(human);
+                identifiable = new Citizen(name, age, id);
+            } else if (array.length == 2) {
+                String model = array[0];
+                id = array[1];
+
+                identifiable = new Robot(model, id);
             }
 
-            input = scanner.nextLine();
+            identifiables.add(identifiable);
+            line = scanner.nextLine();
         }
 
-        String fakeId = scanner.nextLine();
-
-        for (Identifiable identifiable : list) {
-           if (identifiable.getId().endsWith(fakeId)) {
-               System.out.println(identifiable.getId());
-            }
-        }
-
+        // 3. SearchedId reading, filtering and printing:
+        String searchedId = scanner.nextLine();
+        identifiables.stream().filter( (ident) -> ident.getId().endsWith(searchedId))
+                .forEach( (ident) -> System.out.println(ident.getId()));
     }
 }

@@ -1,6 +1,6 @@
 package T04InterfacesAndAbstraction.Lab.P05BorderControl;
 
-public class Citizen implements Identifiable{
+public class Citizen implements Identifiable {
     private String name;
     private int age;
     private String id;
