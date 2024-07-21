@@ -35,6 +35,7 @@ public class Seat implements Car{
 
     @Override
     public String toString() {
-        return String.format("This is %s produced in %s and have %d tires", this.model, this.countryProduced, this.TIRES);
+        return String.format("This is %s produced in %s and have %d tires",
+                this.getModel(), this.countryProduced(), this.TIRES);
     }
 }
