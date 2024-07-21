@@ -1,9 +1,10 @@
 package T03Inheritance.Exercise.P06Animals;
 
 public class Kitten extends Cat{
+    private final static String GENDER = "Female";
 
     public Kitten(String name, int age) {
-        super(name, age, "Female");
+        super(name, age, GENDER);
     }
 
     @Override
