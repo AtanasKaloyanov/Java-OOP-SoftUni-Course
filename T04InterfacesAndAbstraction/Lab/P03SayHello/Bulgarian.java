@@ -14,6 +14,6 @@ public class Bulgarian implements Person{
 
     @Override
     public String sayHello() {
-        return "Здравей";
+        return "Zdr";
     }
 }
