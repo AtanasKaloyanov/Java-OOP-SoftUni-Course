@@ -1,12 +1,12 @@
 package T04InterfacesAndAbstraction.Lab.P04SayHelloExtend;
 
 public class Bulgarian extends BasePerson{
-    public Bulgarian(String name) {
+    protected Bulgarian(String name) {
         super(name);
     }
 
     @Override
     public String sayHello() {
-        return "Здравей";
+        return "Zdr";
     }
 }

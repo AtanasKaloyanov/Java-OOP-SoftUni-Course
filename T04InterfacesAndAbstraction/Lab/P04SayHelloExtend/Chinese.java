@@ -1,7 +1,7 @@
 package T04InterfacesAndAbstraction.Lab.P04SayHelloExtend;
 
 public class Chinese extends BasePerson{
-    public Chinese(String name) {
+    protected Chinese(String name) {
         super(name);
     }
 
