@@ -1,6 +1,6 @@
 package T04InterfacesAndAbstraction.Exercise.P01DefineAnInterfacePerson;
 
-public class Citizen implements Person{
+public class Citizen implements Person {
     private String name;
     private int age;
 

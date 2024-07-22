@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. Input reading, creating and printing object:
         Class[] citizenInterfaces = Citizen.class.getInterfaces();
         if(Arrays.asList(citizenInterfaces).contains(Person.class)){
             Method[] fields = Person.class.getDeclaredMethods();
