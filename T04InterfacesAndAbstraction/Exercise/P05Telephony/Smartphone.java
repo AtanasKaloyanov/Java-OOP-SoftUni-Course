@@ -2,7 +2,7 @@ package T04InterfacesAndAbstraction.Exercise.P05Telephony;
 
 import java.util.List;
 
-public class Smartphone implements Callable, Browsable {
+public class Smartphone implements Browsable, Callable {
     private List<String> numbers;
     private List<String> urls;
 
@@ -12,53 +12,60 @@ public class Smartphone implements Callable, Browsable {
     }
 
     @Override
-    public String call() {
+    public String browse() {
         StringBuilder sb = new StringBuilder();
-        for (String number : numbers) {
-            boolean correctNumber = true;
-            char[] charArray = number.toCharArray();
-
-            for (char currentChar : charArray) {
-                if (!Character.isDigit(currentChar)) {
-                    correctNumber = false;
+        for (int i = 0; i < this.urls.size(); i++) {
+            String url = this.urls.get(i);
+            char[] urlSymbols = url.toCharArray();
+            boolean isNumber = false;
+            for (char urlSymbol : urlSymbols) {
+                if (Character.isDigit(urlSymbol)) {
+                    isNumber = true;
                     break;
                 }
             }
-
-            if (correctNumber) {
-                sb.append(String.format("Calling... %s", number));
-                sb.append("\n");
-            } else {
-                sb.append("Invalid number!");
-                sb.append("\n");
-            }
+            addingBrowseMessage(sb, i, url, isNumber);
         }
+        return sb.toString();
+    }
 
-        return sb.toString().trim();
+    private void addingBrowseMessage(StringBuilder sb, int i, String url, boolean isNumber) {
+        if (isNumber) {
+            sb.append("Invalid URL!");
+        } else {
+            sb.append("Browsing: ").append(url).append("!");
+        }
+        if (i != this.urls.size() - 1) {
+            sb.append("\n");
+        }
     }
 
     @Override
-    public String browse() {
+    public String call() {
         StringBuilder sb = new StringBuilder();
-        for (String url : urls) {
-            char[] array = url.toCharArray();
-            boolean correctUrl = true;
-            for (char currentChar : array) {
-                if (Character.isDigit(currentChar)) {
-                    correctUrl = false;
+        for (int i = 0; i < this.numbers.size(); i++) {
+            String telNumber = this.numbers.get(i);
+            char[] urlSymbols = telNumber.toCharArray();
+            boolean isNumber = true;
+            for (char urlSymbol : urlSymbols) {
+                if (!Character.isDigit(urlSymbol)) {
+                    isNumber = false;
                     break;
                 }
             }
-
-            if (correctUrl) {
-                sb.append(String.format("Browsing: %s!", url));
-                sb.append("\n");
-            } else {
-                sb.append(String.format("Invalid URL!"));
-                sb.append("\n");
-            }
+            addingCallMessage(sb, i, telNumber, isNumber);
         }
+        return sb.toString();
+    }
 
-        return sb.toString().trim();
+    private void addingCallMessage(StringBuilder sb, int i, String telNumber, boolean isNumber) {
+        if (!isNumber) {
+            sb.append("Invalid number!");
+        } else {
+            sb.append("Calling... ").append(telNumber);
+        }
+        if (i != this.numbers.size() - 1) {
+            sb.append("\n");
+        }
     }
 }
