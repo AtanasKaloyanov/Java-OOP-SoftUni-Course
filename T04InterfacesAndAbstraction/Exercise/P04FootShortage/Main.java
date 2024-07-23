@@ -4,48 +4,49 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+        // 1. Input reading n times, then byers creating via while cycle and
+        // adding them into a map:
+        Map<String, Buyer> buyersByName = new LinkedHashMap<>();
         Scanner scanner = new Scanner(System.in);
-        int number = Integer.parseInt(scanner.nextLine());
-        Map<String, Buyer> buyerMap = new LinkedHashMap<>();
+        int n = Integer.parseInt(scanner.nextLine());
 
-        for (int i = 0; i < number; i++) {
-            String[] data = scanner.nextLine().split(" ");
-            if (data.length == 4) {
-                String name = data[0];
-                int age = Integer.parseInt(data[1]);
-                String id = data[2];
-                String birthDay = data[3];
-
-                Buyer slave = new Citizen(name, age, id, birthDay);
-                buyerMap.put(name, slave);
-            } else {
-                String name = data[0];
-                int age = Integer.parseInt(data[1]);
-                String group = data[2];
-
-                Buyer freeMan = new Rebel(name, age, group);
-                buyerMap.put(name, freeMan);
+        for (int i = 0; i < n; i++) {
+            String[] buyerInfo = scanner.nextLine().split(" ");
+            String name = null;
+            Buyer buyer = null;
+            int age;
+            if (buyerInfo.length == 3) {
+                name = buyerInfo[0];
+                age = Integer.parseInt(buyerInfo[1]);
+                String group = buyerInfo[2];
+                buyer = new Rebel(name, age, group);
+            } else if (buyerInfo.length == 4) {
+                name = buyerInfo[0];
+                age = Integer.parseInt(buyerInfo[1]);
+                String id = buyerInfo[2];
+                String birthday = buyerInfo[3];
+                buyer = new Citizen(name, age, id, birthday);
             }
 
-
+            buyersByName.put(name, buyer);
         }
 
-        String input = scanner.nextLine();
-
-        while (!input.equals("End")) {
-            if (buyerMap.containsKey(input)) {
-                buyerMap.get(input).buyFood();
+        // 2. Reading via while cycle until a command names,
+        // then by this names getting the byers and then buying food
+        String line = scanner.nextLine();
+        while (!line.equals("End")) {
+            String name = line;
+            Buyer buyer = buyersByName.get(name);
+            if (buyer != null) {
+                buyer.buyFood();
             }
-
-            input = scanner.nextLine();
+            line = scanner.nextLine();
         }
 
-        int allFood = 0;
-        for (Map.Entry<String, Buyer> entry : buyerMap.entrySet()) {
-           allFood +=  entry.getValue().getFood();
-        }
-
-        System.out.println(allFood);
+        // 3. Finding the total food and printing it:
+        int totalSum = buyersByName.values().stream()
+                .mapToInt(Buyer::getFood).sum();
+        System.out.println(totalSum);
     }
 }
 

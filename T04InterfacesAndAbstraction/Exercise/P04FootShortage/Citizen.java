@@ -1,6 +1,6 @@
 package T04InterfacesAndAbstraction.Exercise.P04FootShortage;
 
-public class Citizen implements Person, Identifiable, Buyer{
+public class Citizen implements Person, Identifiable, Buyer {
     private String name;
     private int age;
     private String id;
@@ -12,9 +12,7 @@ public class Citizen implements Person, Identifiable, Buyer{
         this.age = age;
         this.id = id;
         this.birthDate = birthDate;
-        this.food = 0;
     }
-
 
     @Override
     public String getName() {
