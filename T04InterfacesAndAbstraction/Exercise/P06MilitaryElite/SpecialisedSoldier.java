@@ -1,5 +1,5 @@
 package T04InterfacesAndAbstraction.Exercise.P06MilitaryElite;
 
-public interface Private {
-    double getSalary();
+public interface SpecialisedSoldier {
+    Corps getCorps();
 }

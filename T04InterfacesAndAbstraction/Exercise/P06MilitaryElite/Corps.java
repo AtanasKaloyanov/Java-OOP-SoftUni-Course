@@ -1,5 +1,6 @@
 package T04InterfacesAndAbstraction.Exercise.P06MilitaryElite;
 
-public interface Private {
-    double getSalary();
+public enum Corps {
+    Airforces,
+    Marines
 }
