@@ -4,11 +4,14 @@ public abstract class Shape {
     private Double perimeter;
     private Double area;
 
+    public abstract void calculatePerimeter();
+    public abstract void calculateArea();
+
     public Double getPerimeter() {
         return perimeter;
     }
 
-    protected void setPerimeter(Double perimeter) {
+    public void setPerimeter(Double perimeter) {
         this.perimeter = perimeter;
     }
 
@@ -19,10 +22,6 @@ public abstract class Shape {
     public void setArea(Double area) {
         this.area = area;
     }
-
-    public abstract Double calculatePerimeter();
-
-    public abstract Double calculateArea();
 }
 
 
