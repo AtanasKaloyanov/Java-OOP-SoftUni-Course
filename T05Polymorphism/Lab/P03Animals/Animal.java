@@ -9,6 +9,8 @@ public abstract class Animal {
         this.favouriteFood = favouriteFood;
     }
 
+    public abstract String explainSelf();
+
     public String getName() {
         return name;
     }
@@ -16,6 +18,4 @@ public abstract class Animal {
     public String getFavouriteFood() {
         return favouriteFood;
     }
-
-    public abstract String explainSelf();
 }
