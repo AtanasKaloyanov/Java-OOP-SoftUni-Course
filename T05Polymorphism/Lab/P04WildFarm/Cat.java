@@ -5,8 +5,8 @@ import java.text.DecimalFormat;
 public class Cat extends Feline {
     private String breed;
 
-    public Cat(String animalName, String animalType, Double animalWeight, Integer foodEaten, String livingRegion, String breed) {
-        super(animalName, animalType, animalWeight, foodEaten, livingRegion);
+    public Cat(String animalName, String animalType, Double animalWeight, String livingRegion, String breed) {
+        super(animalName, animalType, animalWeight, livingRegion);
         this.breed = breed;
     }
 
@@ -16,8 +16,9 @@ public class Cat extends Feline {
     }
 
     @Override
-    public void eatFood() {
-
+    public void eat(Food food) {
+            Integer foodQuantity = food.getQuantity();
+            super.setFoodEaten(foodQuantity);
     }
 
     @Override

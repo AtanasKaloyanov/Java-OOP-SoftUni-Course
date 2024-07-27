@@ -7,4 +7,7 @@ public abstract class Food {
         this.quantity = quantity;
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
 }

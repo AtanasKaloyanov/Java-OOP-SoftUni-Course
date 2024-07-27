@@ -4,8 +4,9 @@ import java.text.DecimalFormat;
 
 public abstract class Mammal extends Animal {
     private String livingRegion;
-    public Mammal(String animalName, String animalType, Double animalWeight, Integer foodEaten, String livingRegion) {
-        super(animalName, animalType, animalWeight, foodEaten);
+
+    public Mammal(String animalName, String animalType, Double animalWeight, String livingRegion) {
+        super(animalName, animalType, animalWeight);
         this.livingRegion = livingRegion;
     }
 
@@ -17,9 +18,8 @@ public abstract class Mammal extends Animal {
     public String toString() {
         DecimalFormat df = new DecimalFormat("0.##");
         String weightFormat = df.format(super.getAnimalWeight());
-        return String.format("%s[%s, %s, %s, %d]", super.getAnimalType(), super.getAnimalName(),
-                        weightFormat, this.getLivingRegion(),
+        return String.format("%s[%s, %s, %s, %d]", super.getAnimalType(),
+                super.getAnimalName(), weightFormat, this.getLivingRegion(),
                         super.getFoodEaten());
-
     }
 }

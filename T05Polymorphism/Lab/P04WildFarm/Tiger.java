@@ -1,8 +1,10 @@
 package T05Polymorphism.Lab.P04WildFarm;
 
 public class Tiger extends Feline {
-    public Tiger(String animalName, String animalType, Double animalWeight, Integer foodEaten, String livingRegion) {
-        super(animalName, animalType, animalWeight, foodEaten, livingRegion);
+    private String livingRegion;
+
+    public Tiger(String animalName, String animalType, Double animalWeight, String livingRegion) {
+        super(animalName, animalType, animalWeight, livingRegion);
     }
 
     @Override
@@ -11,9 +13,16 @@ public class Tiger extends Feline {
     }
 
     @Override
-    public void eatFood() {
-        System.out.println("Tigers are not eating that type of food!");
+    public void eat(Food food) {
+        if (food instanceof Meat) {
+            Integer foodQuantity = food.getQuantity();
+            super.setFoodEaten(foodQuantity);
+        } else {
+            super.setFoodEaten(0);
+            System.out.println("Tigers are not eating that type of food!");
+        }
     }
+
 
     @Override
     public String toString() {
