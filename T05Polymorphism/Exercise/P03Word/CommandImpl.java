@@ -82,7 +82,7 @@ public class CommandImpl implements CommandInterface {
 
 
     protected List<Command> initCommands() {
-        // 1. Creating a 3 commands and addint it to a list
+        // 1. Creating 3 commands and adding it to a list
         Command command1 = new Command("uppercase", new ToUpperTransform());
         Command command2 = new Command("cut", new CutTransform());
         Command command3 = new Command("paste", new PastTransform());
