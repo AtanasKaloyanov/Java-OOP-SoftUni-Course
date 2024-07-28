@@ -19,36 +19,23 @@ public class CommandImpl implements CommandInterface {
     private class CutTransform implements TextTransform {
         @Override
         public void invokeOn(StringBuilder text, int startIndex, int endIndex) {
-            removedText.setLength(0);
-            saveText(text, startIndex, endIndex);
-
+            removedText = text.substring(startIndex, endIndex);
             text.delete(startIndex, endIndex);
         }
 
-        private void saveText(StringBuilder text, int startIndex, int endIndex) {
-            for (int i = 0; i < text.length(); i++) {
-                if (i > endIndex) {
-                    break;
-                }
-                char currentChar = text.charAt(i);
-                if (i >= startIndex && i < endIndex) {
-                    removedText.append(currentChar);
-                }
-            }
-        }
     }
 
     private class PastTransform implements TextTransform {
 
         @Override
         public void invokeOn(StringBuilder text, int startIndex, int endIndex) {
-              text.replace(startIndex, endIndex, removedText.toString());
+              text.replace(startIndex, endIndex, removedText);
         }
     }
 
     private Map<String, TextTransform> commandTransforms;
     private StringBuilder text;
-    private StringBuilder removedText = new StringBuilder();
+    private String removedText;
 
     public CommandImpl(StringBuilder text) {
         this.commandTransforms = new HashMap<>();

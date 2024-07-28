@@ -23,15 +23,3 @@ public class Main {
     }
 }
 
-/*
-
-      Input 1:
-
-         som3. text
-
-        1. cut 1 7     -> removes and saves "om3. t" /  sext
-        2. paste 3 4
-        3.
-
-
- */
