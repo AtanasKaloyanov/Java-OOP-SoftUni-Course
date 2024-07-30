@@ -14,6 +14,9 @@ public class InputInterpreter {
         } catch (Exception ex) {
             Operation operation = this.getOperation(input);
             this.engine.pushOperation(operation);
+        } finally {
+            // saving every input with this method
+            this.engine.pushEveryInput(input);
         }
         return true;
     }

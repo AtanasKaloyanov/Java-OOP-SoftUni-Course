@@ -17,11 +17,12 @@ public class Main {
         }
 
         System.out.println(engine.getCurrentResult());
-        System.out.println(engine.getMsCommandsResults());
     }
 }
 
 /*
+3 ms * 4 / mr
+
 Input 1:
 
 CalculationEngine engine = new CalculationEngine()
