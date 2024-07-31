@@ -1,4 +1,4 @@
-package T06SOLID.Exercise.PSOLID;
+package T06SOLID.Exercise2;
 
 public class Main {
 
