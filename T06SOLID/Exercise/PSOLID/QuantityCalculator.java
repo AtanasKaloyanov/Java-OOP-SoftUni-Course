@@ -1,15 +1,14 @@
-package T06SOLID.Exercise2;
+package T06SOLID.Exercise.PSOLID;
 
-import T06SOLID.Exercise2.products.Product;
+import T06SOLID.Exercise.PSOLID.products.Product;
 
 import java.util.List;
 
-public class CalorieCalculator implements Calculator {
-
+public class QuantityCalculator implements Calculator{
     @Override
     public double sum(List<Product> products) {
         return products.stream()
-                .mapToDouble(Product::calculateCalories)
+                .mapToDouble(Product::calculateAmountInKg)
                 .sum();
     }
 

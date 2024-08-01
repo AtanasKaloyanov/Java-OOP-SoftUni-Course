@@ -1,4 +1,4 @@
-package T06SOLID.Exercise2.products;
+package T06SOLID.Exercise.PSOLID.products;
 
 public abstract class Drink extends Product {
     private double milliliters;
@@ -15,6 +15,11 @@ public abstract class Drink extends Product {
     @Override
     public double getGrams() {
         return this.milliliters * this.density;
+    }
+
+    @Override
+    public  double getKg() {
+        return (this.density / 1000) * this.density;
     }
 
 }

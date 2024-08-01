@@ -1,4 +1,4 @@
-package T06SOLID.Exercise2.products;
+package T06SOLID.Exercise.PSOLID.products;
 
 public class Lemonade extends Coke {
     public static final double CALORIES_PER_100_GRAMS = 53.0;
@@ -6,7 +6,7 @@ public class Lemonade extends Coke {
 
     public Lemonade(double milliliters) {
         super(milliliters);
-        setCaloriesBy100Gr(CALORIES_PER_100_GRAMS);
-        setDensity(DENSITY);
+        super.setCaloriesBy100Gr(CALORIES_PER_100_GRAMS);
+        super.setDensity(DENSITY);
     }
 }

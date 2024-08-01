@@ -1,6 +1,6 @@
-package T06SOLID.Exercise2;
+package T06SOLID.Exercise.PSOLID;
 
-import T06SOLID.Exercise2.products.Product;
+import T06SOLID.Exercise.PSOLID.products.Product;
 
 import java.util.List;
 

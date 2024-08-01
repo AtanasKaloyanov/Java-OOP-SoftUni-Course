@@ -1,4 +1,4 @@
-package T06SOLID.Exercise2.products;
+package T06SOLID.Exercise.PSOLID.products;
 
 public abstract class Food extends Product {
     private double grams;
@@ -12,4 +12,8 @@ public abstract class Food extends Product {
         return this.grams;
     }
 
+    @Override
+    public  double getKg() {
+        return this.grams / 1000;
+    }
 }

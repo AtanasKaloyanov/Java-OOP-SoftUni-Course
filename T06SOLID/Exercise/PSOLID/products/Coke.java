@@ -1,4 +1,4 @@
-package T06SOLID.Exercise2.products;
+package T06SOLID.Exercise.PSOLID.products;
 
 public class Coke extends Drink {
 
