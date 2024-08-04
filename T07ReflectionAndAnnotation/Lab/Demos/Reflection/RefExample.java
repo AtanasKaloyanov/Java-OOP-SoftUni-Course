@@ -1,4 +1,4 @@
-package T07ReflectionAndAnnotation.Lab.ReflectionExample;
+package T07ReflectionAndAnnotation.Lab.Demos.Reflection;
 
 
  public class RefExample extends RefFather implements RefInt1, RefInt2 {
@@ -23,7 +23,6 @@ package T07ReflectionAndAnnotation.Lab.ReflectionExample;
          this.secondName = secondName;
      }
 
-     @SuppressWarnings("a")
      public void do1() {
 
      }

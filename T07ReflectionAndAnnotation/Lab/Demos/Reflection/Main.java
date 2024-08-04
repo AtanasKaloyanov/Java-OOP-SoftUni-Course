@@ -1,7 +1,6 @@
-package T07ReflectionAndAnnotation.Lab.ReflectionExample;
+package T07ReflectionAndAnnotation.Lab.Demos.Reflection;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
@@ -11,7 +10,7 @@ public class Main {
         Class<RefExample> refExample = RefExample.class;
         System.out.println(refExample);
         // 2. The same but with Class.for("classNameWithPackageNotation")
-        Class<?> refExample2 = Class.forName("T07ReflectionAndAnnotation.Lab.ReflectionExample.RefExample");
+        Class<?> refExample2 = Class.forName("T07ReflectionAndAnnotation.Lab.Demos.Reflection.RefExample");
         System.out.println(refExample2);
         // 3. Obtain the class name via .class.className
         String className = RefExample.class.getName();
