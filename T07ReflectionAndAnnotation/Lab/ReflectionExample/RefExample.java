@@ -1,6 +1,7 @@
 package T07ReflectionAndAnnotation.Lab.ReflectionExample;
 
-public class RefExample extends RefFather implements RefInt1, RefInt2 {
+
+ public class RefExample extends RefFather implements RefInt1, RefInt2 {
     public String publicField;
     private String name;
     private String secondName;
@@ -22,6 +23,7 @@ public class RefExample extends RefFather implements RefInt1, RefInt2 {
          this.secondName = secondName;
      }
 
+     @SuppressWarnings("a")
      public void do1() {
 
      }
@@ -32,6 +34,10 @@ public class RefExample extends RefFather implements RefInt1, RefInt2 {
 
      private void do3() {
 
+     }
+
+     public String do4(String text) {
+        return "b";
      }
 
      @Override

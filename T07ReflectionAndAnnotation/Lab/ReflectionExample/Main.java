@@ -1,9 +1,7 @@
 package T07ReflectionAndAnnotation.Lab.ReflectionExample;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
@@ -73,6 +71,42 @@ public class Main {
         // 19. Obtain an array of the public methods via .class.getMethods()
         Method[] methods = RefExample.class.getMethods();
         System.out.println(Arrays.toString(methods));
-        // 20. 
+        // 20. Obtain an array of the return types of the params of the method via .getParamTypes():
+        Class<?>[] paramTypes = method.getParameterTypes();
+        System.out.println(Arrays.toString(paramTypes));
+        // 21. Obtain the return type of method via .getReturnType():
+        Class<?> returnType = method.getReturnType();
+        System.out.println(returnType);
+        // 22. Obtain the value of the returnType (Object) of method via .invoke(classObject, args...)
+        Method methodDo4 = RefExample.class.getDeclaredMethod("do4", String.class);
+        RefExample refExample3 = new RefExample();
+        Object returnType2 = methodDo4.invoke(refExample3, "a");
+        System.out.println(returnType2);
+        // 23. Obtain  class, field or method access modifier via .gerModifiers().
+        // 1 - public
+        // 2 - private
+        // 0 - default
+        // 4 - protected
+        Method do4Y = RefExample.class.getDeclaredMethod("do4", String.class);
+        int modifier = do4Y.getModifiers();
+        System.out.println(modifier);
+        // Modifier.isPrivate(modifier),
+        // Modifier.isProtected(modifier),
+        // Modifier.isPublic(modifier),
+        // Modifier.isStatic(modifier)
+        // - returns true or false if the
+        // class, field or method is private, protected, public or static:
+        System.out.println(Modifier.isPrivate(do4Y.getModifiers()));
+        // 24. Creating an array with reflection via Array.newInstance(
+        // elementType.class, numberElement) and casting:
+        int[] array = (int[]) Array.newInstance(int.class, 3);
+        System.out.println(Arrays.toString(array));
+        // 25. Setting a value of an element in the array via Array.set(array, index, value):
+        Array.set(array, 1, 5);
+        System.out.println(Arrays.toString(array));
+        // 26. Obtain the array's elements class (component type) of an array:
+        String[] names = new String[5];
+        Class<?> componentType = names.getClass().getComponentType();
+        System.out.println(componentType);
     }
 }
