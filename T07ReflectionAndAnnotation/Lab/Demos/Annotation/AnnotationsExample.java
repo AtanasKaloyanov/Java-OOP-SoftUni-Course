@@ -4,6 +4,10 @@ import java.lang.reflect.Array;
 
 public class AnnotationsExample<T> {
     @Deprecated
+    @Warning(warn1 = "a", warn2 = "b")
+    private String field1;
+
+    @Deprecated
     public void do1() {
 
     }
@@ -14,10 +18,11 @@ public class AnnotationsExample<T> {
     }
 
     @Warning(warn1 = "Solve problems", warn2 = "Be smart")
-    public void do2 (
-            @Deprecated(forRemoval = true)
+    public void do2(
+            @ParameterWarning(warn1 = "a", warn2 = "a")
             String text1,
-            @ParameterWarning(warn1 = "a", warn2 = "b")
+            @ParameterWarning(warn1 = "b", warn2 = "b")
             String text2) {
     }
+
 }

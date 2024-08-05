@@ -4,11 +4,13 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Target;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws NoSuchMethodException {
+    @Deprecated
+    public static void main(String[] args) throws NoSuchMethodException, NoSuchFieldException {
         AnnotationsExample<String> annotationsExample = new AnnotationsExample<>();
 
         // 1. @Deprecated - We don't have to use the method.
@@ -25,13 +27,19 @@ public class Main {
         // 7. Obtain the annotation's array with .class.getAnnotations():
         Annotation[] annotations = Warning.class.getAnnotations();
         System.out.println(Arrays.toString(annotations));
-        // 8. Obtain the values of the parameter's annotations
-        // of  a method via .getParameterAnnotations():
+        // 8. Obtain the values of the parameter's annotations of  a method via .getParameterAnnotations().
+        // It works when the annotation works on runtime (The annotation have to have its own annotation - RetentionPolicy.RUNTIME)
         Method method = AnnotationsExample.class.getMethod("do2", String.class, String.class);
         Annotation[][] parametersAnnotations = method.getParameterAnnotations();
         System.out.println(Arrays.deepToString(parametersAnnotations));
-        // 9.
+        // 9. Obtain the field's or method's annotations via .declaredAnnotations():
+        Field field = AnnotationsExample.class.getDeclaredField("field1");
+        Annotation[] fieldAnnotations = field.getDeclaredAnnotations();
+        System.out.println(Arrays.toString(fieldAnnotations));
 
+        Annotation[] methodAnnotations = method.getDeclaredAnnotations();
+        System.out.println(Arrays.toString(methodAnnotations));
+        // 10.
     }
 
 }
