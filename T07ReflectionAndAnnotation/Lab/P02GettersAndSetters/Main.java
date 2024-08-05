@@ -1,31 +1,50 @@
 package T07ReflectionAndAnnotation.Lab.P02GettersAndSetters;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 public class Main {
     public static void main(String[] args) {
-        Class reflection = Reflection.class;
-        Method[] allMethods = reflection.getDeclaredMethods();
+        // 1. Obtain the reflection class and all its methods:
+        Class<Reflection> reflectionClass = Reflection.class;
+        Method[] methods = reflectionClass.getDeclaredMethods();
 
-        List<Method> gettersList = new ArrayList<>();
-        Arrays.stream(allMethods)
-                .filter(method -> method.getName().startsWith("get") && method.getParameterTypes().length == 0)
-                .forEach(gettersList::add);
+        // 2. Creating 2 trees for the getters and setters, adding
+        // them a comparator and filling them
+        Comparator<Method> nameComparator = Comparator.comparing(Method::getName);
+        TreeSet<Method> getters = new TreeSet<>(nameComparator);
+        TreeSet<Method> setters = new TreeSet<>(nameComparator);
+        fillingGettersAndSetters(methods, getters, setters);
 
-        gettersList.stream()
-                .sorted(Comparator.comparing(Method::getName))
-                .forEach(method -> System.out.printf("%s will return class %s%n", method.getName(), method.getReturnType().getName()));
+        // 3. Output printing:
+        gettersPrinting(getters);
+        setterPrinting(setters);
+    }
 
-        List<Method> setterList = new ArrayList<>();
-        Arrays.stream(allMethods)
-                .filter(method -> method.getName().startsWith("set") && method.getParameterCount() == 1)
-                .forEach(setterList::add);
+    private static void setterPrinting(TreeSet<Method> setters) {
+        setters.forEach( (setter) -> {
+            String setterName = setter.getName();
+            String setterParamType = setter.getParameterTypes()[0].getName();
+            System.out.printf("%s and will set field of class %s\n", setterName, setterParamType);
+        });
+    }
 
-        setterList.stream()
-                .sorted(Comparator.comparing(Method::getName))
-                .forEach(method -> System.out.printf("%s and will set field of class %s%n", method.getName(), method.getParameterTypes()[0].getName()));
+    private static void gettersPrinting(TreeSet<Method> getters) {
+        getters.forEach( (getter) -> {
+            String getterName = getter.getName();
+            String getterReturnType = getter.getReturnType().getName();
+            System.out.printf("%s will return class %s\n", getterName, getterReturnType);
+        });
+    }
 
-
+    private static void fillingGettersAndSetters(Method[] methods, TreeSet<Method> getters, TreeSet<Method> setters) {
+        for (Method method : methods) {
+            if (method.getName().startsWith("get")) {
+                getters.add(method);
+            } else if (method.getName().startsWith("set")) {
+                setters.add(method);
+            }
+        }
     }
 }
