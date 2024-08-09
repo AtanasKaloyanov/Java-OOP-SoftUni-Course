@@ -63,25 +63,27 @@ public class Main {
         Field nameField = refClass.getDeclaredField("name");
         nameField.setAccessible(true);
         nameField.set(refObj, "a");
-        System.out.println(refObj);
-        // 18. Obtain a public method vid getMethod("methodName", varargs of the param. types):
+        // 18. Obtain the value of a field by object. It is used casting -  (Field type) field.get(object)
+        String name = (String) nameField.get(refObj);
+        System.out.println(name);
+        // 19. Obtain a public method vid getMethod("methodName", varargs of the param. types):
         Method method = RefExample.class.getMethod("do1");
         System.out.println(method);
-        // 19. Obtain an array of the public methods via .class.getMethods()
+        // 20. Obtain an array of the public methods via .class.getMethods()
         Method[] methods = RefExample.class.getMethods();
         System.out.println(Arrays.toString(methods));
-        // 20. Obtain an array of the return types of the params of the method via .getParamTypes():
+        // 21. Obtain an array of the return types of the params of the method via .getParamTypes():
         Class<?>[] paramTypes = method.getParameterTypes();
         System.out.println(Arrays.toString(paramTypes));
-        // 21. Obtain the return type of method via .getReturnType():
+        // 22. Obtain the return type of method via .getReturnType():
         Class<?> returnType = method.getReturnType();
         System.out.println(returnType);
-        // 22. Obtain the value of the returnType (Object) of method via .invoke(classObject, args...)
+        // 23. Obtain the value of the returnType (Object) of method via .invoke(classObject, args...)
         Method methodDo4 = RefExample.class.getDeclaredMethod("do4", String.class);
         RefExample refExample3 = new RefExample();
         Object returnType2 = methodDo4.invoke(refExample3, "a");
         System.out.println(returnType2);
-        // 23. Obtain  class, field or method access modifier via .gerModifiers().
+        // 24. Obtain  class, field or method access modifier via .gerModifiers().
         // 1 - public
         // 2 - private
         // 0 - default
@@ -96,14 +98,14 @@ public class Main {
         // - returns true or false if the
         // class, field or method is private, protected, public or static:
         System.out.println(Modifier.isPrivate(do4Y.getModifiers()));
-        // 24. Creating an array with reflection via Array.newInstance(
+        // 25. Creating an array with reflection via Array.newInstance(
         // elementType.class, numberElement) and casting:
         int[] array = (int[]) Array.newInstance(int.class, 3);
         System.out.println(Arrays.toString(array));
-        // 25. Setting a value of an element in the array via Array.set(array, index, value):
+        // 26. Setting a value of an element in the array via Array.set(array, index, value):
         Array.set(array, 1, 5);
         System.out.println(Arrays.toString(array));
-        // 26. Obtain the array's elements class (component type) of an array:
+        // 27. Obtain the array's elements class (component type) of an array:
         String[] names = new String[5];
         Class<?> componentType = names.getClass().getComponentType();
         System.out.println(componentType);
