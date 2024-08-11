@@ -1,36 +1,38 @@
 package T08ExceptionAndErrorHandling;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class P01NumberInRange {
     public static void main(String[] args) {
+        // 1. Interval reading and printing:
         Scanner scanner = new Scanner(System.in);
+        String[] array = scanner.nextLine().split(" ");
+        int intervalBegin = Integer.parseInt(array[0]);
+        int intervalEnd = Integer.parseInt(array[1]);
+        System.out.printf("Range: [%d...%d]\n", intervalBegin, intervalEnd);
 
-        int[] range = Arrays.stream(scanner.nextLine().split(" "))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-
-        int start = range[0];
-        int end = range[1];
-
-        System.out.printf("Range: [%d...%d]%n", start, end);
-
-        String input = scanner.nextLine();
-        while (true) {
+        // 2. Reading a line and printing a message in
+        // try/catch/finally construction until a valid number is entered:
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String output = "";
             try {
-                int number = Integer.parseInt(input);
-                if (number >= start && number <= end) {
-                    System.out.printf("Valid number: %d%n", number);
-                    return;
+                int number = Integer.parseInt(line);
+                if (isInTheInterval(intervalBegin, intervalEnd, number)) {
+                    throw new NumberFormatException();
                 }
-
-            } catch (Exception exception) {
-
+                output = String.format("Valid number: %d", number);
+                return;
+            } catch (NumberFormatException nfe) {
+                output = String.format("Invalid number: %s", line);
+            } finally {
+                System.out.println(output);
             }
-
-            System.out.printf("Invalid number: %s%n", input);
-            input = scanner.nextLine();
         }
+
+    }
+
+    private static boolean isInTheInterval(int intervalBegin, int intervalEnd, int number) {
+        return (number < intervalBegin) || (number > intervalEnd);
     }
 }
