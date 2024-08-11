@@ -4,19 +4,21 @@ import java.util.Scanner;
 
 public class P02SquareRoot {
     public static void main(String[] args) {
+        // 1. Input reading and output printing:
         Scanner scanner = new Scanner(System.in);
+        String result = "";
         try {
             int number = Integer.parseInt(scanner.nextLine());
-            double root = Math.pow(number, 0.5);
-            if (number >= 0) {
-                System.out.printf("%.2f%n", root);
-            } else {
-                System.out.println("Invalid");
+            if (number < 0) {
+                throw new NumberFormatException();
             }
-        } catch (Exception e) {
-            System.out.println("Invalid");
 
+            double sqrt = Math.sqrt(number);
+            result = String.format("%.2f", sqrt);
+        } catch (NumberFormatException nfe) {
+            result = "Invalid";
         } finally {
+            System.out.println(result);
             System.out.println("Goodbye");
         }
     }
