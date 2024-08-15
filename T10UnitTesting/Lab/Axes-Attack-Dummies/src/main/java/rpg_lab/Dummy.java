@@ -1,6 +1,6 @@
-package PRpg;
+package rpg_lab;
 
-public class Dummy implements Target{
+public class Dummy {
 
     private int health;
     private int experience;

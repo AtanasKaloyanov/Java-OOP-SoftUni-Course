@@ -1,15 +1,17 @@
-package PRpg;
+package rpg_lab;
+
+import java.util.Random;
 
 public class Hero {
 
     private String name;
     private int experience;
-    private Weapon weapon;
+    private Axe weapon;
 
-    public Hero(String name, Weapon weapon) {
+    public Hero(String name) {
         this.name = name;
         this.experience = 0;
-        this.weapon = weapon;
+        this.weapon = new Axe(10, 10);
     }
 
     public String getName() {
@@ -20,11 +22,11 @@ public class Hero {
         return this.experience;
     }
 
-    public Weapon getWeapon() {
+    public Axe getWeapon() {
         return this.weapon;
     }
 
-    public void attack(Target target) {
+    public void attack(Dummy target) {
         this.weapon.attack(target);
 
         if (target.isDead()) {
