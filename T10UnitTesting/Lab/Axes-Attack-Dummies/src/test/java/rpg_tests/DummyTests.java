@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import rpg_lab.Dummy;
 
-public class Dummy_Tests {
+public class DummyTests {
     private static final int INITIAL_HEALTH = 100;
     private static final int INITIAL_EXPERIENCE = 1000;
     private static final int TAKEN_DAMAGE = 10;
