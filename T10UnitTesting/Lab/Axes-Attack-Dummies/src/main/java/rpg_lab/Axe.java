@@ -17,6 +17,7 @@ public class Axe implements Weapon {
         return this.durabilityPoints;
     }
 
+
     public void attack(Target target) {
         if (this.durabilityPoints <= 0) {
             throw new IllegalStateException("Axe is broken.");
