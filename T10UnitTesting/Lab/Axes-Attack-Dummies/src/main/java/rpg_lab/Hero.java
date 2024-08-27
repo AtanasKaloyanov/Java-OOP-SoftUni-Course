@@ -32,7 +32,6 @@ public class Hero implements HeroInventory {
 
         if (target.isDead()) {
             this.experience += target.giveExperience();
-            //
             this.possibleLoot.addAll(target.getLootWeapons());
         }
     }
@@ -44,18 +43,18 @@ public class Hero implements HeroInventory {
     public class WeaponIterator implements Iterator<Weapon> {
         private int counter;
 
-    @Override
-    public boolean hasNext() {
-        return this.counter < getLootWeapons().size();
-    }
+        @Override
+        public boolean hasNext() {
+            return this.counter < getLootWeapons().size();
+        }
 
-    @Override
-    public Weapon next() {
-        Weapon weapon = getLootWeapons().get(this.counter);
-        this.counter++;
-        return weapon;
+        @Override
+        public Weapon next() {
+            Weapon weapon = getLootWeapons().get(this.counter);
+            this.counter++;
+            return weapon;
+        }
     }
-}
 
     @Override
     public Iterable<Weapon> getInventory() {

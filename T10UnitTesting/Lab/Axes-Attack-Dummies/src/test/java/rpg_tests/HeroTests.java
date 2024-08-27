@@ -3,6 +3,7 @@ package rpg_tests;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import rpg_lab.*;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class HeroTests {
 
     @Test
     public void testHeroDestroysTargetGetLoot() {
-        // 1. check before attack:
+        // 1. Check before attack:
         int expectedLootWeapons = 0;
         int realLootWeapons = this.hero.getLootWeapons().size();
         Assert.assertEquals(expectedLootWeapons, realLootWeapons);
@@ -96,7 +97,42 @@ public class HeroTests {
 
         // 4. Iterable check:
         List<Weapon> addedWeaponsByIterable = new ArrayList<>();
-        Iterator<Weapon> weaponsIterator =  this.hero.getInventory().iterator();
+        Iterator<Weapon> weaponsIterator = this.hero.getInventory().iterator();
+
+        while (weaponsIterator.hasNext()) {
+            Weapon currentWeapon = weaponsIterator.next();
+            addedWeaponsByIterable.add(currentWeapon);
+        }
+
+        Assert.assertEquals(lootWeapons, addedWeaponsByIterable);
+    }
+
+    @Test
+    public void testHeroDestroysTargetGetLootMockito() {
+        int expectedWeaponsBeforeAttack = 0;
+        int realWeaponsBeforeAttack = this.hero.getLootWeapons().size();
+
+        Assert.assertEquals(expectedWeaponsBeforeAttack, realWeaponsBeforeAttack);
+
+        // 1. Creating mock object:
+        Target target = Mockito.mock(Target.class);
+
+        List<Weapon> lootWeapons = new ArrayList<>(
+                List.of(this.lootWeapon1, this.lootWeapon2));
+
+        // 2. Implementing the methods of the mock object:
+        Mockito.when(target.isDead()).thenReturn(true);
+        Mockito.when(target.getLootWeapons()).thenReturn(lootWeapons);
+
+        this.hero.attack(target);
+
+        // 3. Check after attack:
+        int realLootWeaponsAfterAttack = this.hero.getLootWeapons().size();
+        Assert.assertEquals(NUMBER_WEAPONS_AFTER_ATTACK, realLootWeaponsAfterAttack);
+
+        // 4. Iterable check:
+        List<Weapon> addedWeaponsByIterable = new ArrayList<>();
+        Iterator<Weapon> weaponsIterator = this.hero.getInventory().iterator();
 
         while (weaponsIterator.hasNext()) {
             Weapon currentWeapon = weaponsIterator.next();
