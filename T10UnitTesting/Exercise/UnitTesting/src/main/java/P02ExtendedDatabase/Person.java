@@ -1,7 +1,6 @@
 package P02ExtendedDatabase;
 
 public class Person {
-
     private int id;
     private String name;
 

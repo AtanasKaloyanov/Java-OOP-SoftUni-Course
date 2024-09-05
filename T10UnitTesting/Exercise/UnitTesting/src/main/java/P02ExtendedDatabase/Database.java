@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-
     private Person[] elements;
-    private int elementsCount = 0;
+    private int elementsCount;
     private int index;
-
-
     public Database(Person... people) throws OperationNotSupportedException {
         this.elementsCount = people.length;
         this.setElements(people);

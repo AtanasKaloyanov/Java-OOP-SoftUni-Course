@@ -73,7 +73,7 @@ public class DataBaseTest {
         this.database.remove();
     }
 
-     @Test
+    @Test
     public void testConstructorSafeTheNumberInArray() throws OperationNotSupportedException {
         Integer[] realNumbers = this.database.getElements();
          for (int i = 0; i < realNumbers.length; i++) {
