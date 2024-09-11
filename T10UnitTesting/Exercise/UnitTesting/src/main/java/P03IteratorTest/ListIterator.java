@@ -14,11 +14,10 @@ public class ListIterator {
         }
 
         this.elements = Arrays.asList(elements);
-        this.currentIndex = 0;
     }
 
     public boolean move(){
-        if(hasNext()){
+        if (hasNext()){
             this.currentIndex++;
             return true;
         }
@@ -27,7 +26,7 @@ public class ListIterator {
     }
 
     public boolean hasNext(){
-        if(currentIndex < elements.size() - 1){
+        if(this.currentIndex < this.elements.size() - 1){
             return true;
         }
 
@@ -35,7 +34,7 @@ public class ListIterator {
     }
 
     public String print(){
-        if(this.elements.size() == 0){
+        if (this.elements.size() == 0){
             throw new IllegalStateException("Invalid Operation!");
         }
 
