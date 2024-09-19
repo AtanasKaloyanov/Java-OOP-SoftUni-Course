@@ -1,7 +1,6 @@
 package P04BubbleSortTest;
 
 public class Bubble {
-
     public static void sort(int[] arr) {
         int n = arr.length;
 
