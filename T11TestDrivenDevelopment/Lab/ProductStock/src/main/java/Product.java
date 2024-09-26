@@ -1,5 +1,4 @@
 public class Product implements Comparable<Product> {
-
     public String label;
 
     public double price;
@@ -38,11 +37,6 @@ public class Product implements Comparable<Product> {
 
     @Override
     public int compareTo(Product o) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String toString() {
-        return this.label + " " + this.getPrice();
+        return this.label.compareTo(o.label);
     }
 }
