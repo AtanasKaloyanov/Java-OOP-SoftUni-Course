@@ -37,15 +37,6 @@ public class Instock implements ProductStock {
         changeProductQuantityInTheList(product, quantity);
     }
 
-    private void changeProductQuantityInTheList(String product, int quantity) {
-        for (Product currentProduct : this.productList) {
-            if (currentProduct.getLabel().equals(product)) {
-                currentProduct.setQuantity(quantity);
-                return;
-            }
-        }
-    }
-
     @Override
     public Product find(int index) {
         if (index < 0 || index >= this.productList.size()) {
@@ -77,10 +68,6 @@ public class Instock implements ProductStock {
                 .collect(Collectors.toList());
     }
 
-    private boolean isNotCorrect(int count) {
-        return count < 0 || count > this.productByLabelMap.size();
-    }
-
     @Override
     public Iterable<Product> findAllInRange(double lo, double hi) {
         Predicate<Product> productPredicate = getRangePredicate(lo, hi);
@@ -91,19 +78,9 @@ public class Instock implements ProductStock {
                 .collect(Collectors.toList());
     }
 
-    private static Comparator<Product> getPriceComp() {
-        return Comparator.comparing(Product::getPrice).reversed();
-    }
-
-    private static Predicate<Product> getRangePredicate(double lo, double hi) {
-        return product -> product.getPrice() > lo && product.getPrice() <= hi;
-    }
-
     @Override
     public Iterable<Product> findAllByPrice(double price) {
-        Predicate<Product> pricePredicate =
-                product -> product.getPrice() == price;
-
+        Predicate<Product> pricePredicate = getPricePredicate(price);
         return this.productList.stream()
                 .filter(pricePredicate)
                 .collect(Collectors.toList());
@@ -111,23 +88,32 @@ public class Instock implements ProductStock {
 
     @Override
     public Iterable<Product> findFirstMostExpensiveProducts(int count) {
-        return null;
-    }
-
-    @Override
-    public Iterable<Product> findAllByQuantity(int quantity) {
-        if (isNotCorrect(quantity)) {
+        if (isNotCorrect(count)) {
             throw new IllegalArgumentException(
-                    "The quantity parameter is greater that the products number.");
+                    "The count parameter is greater that the products number.");
         }
 
         return this.productList.stream()
                 .sorted(getPriceComp())
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Iterable<Product> findAllByQuantity(int quantity) {
+        Predicate<Product> quantityPredicate = getQuantityPredicate(quantity);
+        return this.productList.stream()
+                .filter(quantityPredicate)
                 .limit(quantity)
                 .collect(Collectors.toList());
     }
 
-    public class IteratorHelper implements Iterator<Product> {
+    @Override
+    public Iterator<Product> iterator() {
+        return new IteratorHelper();
+    }
+
+    private class IteratorHelper implements Iterator<Product> {
         private List<Product> products = getProductList();
         private int index;
 
@@ -146,9 +132,32 @@ public class Instock implements ProductStock {
         return this.productList;
     }
 
-    @Override
-    public Iterator<Product> iterator() {
-        return new IteratorHelper();
+    private boolean isNotCorrect(int count) {
+        return count < 0 || count > this.productByLabelMap.size();
+    }
+    private static Predicate<Product> getPricePredicate(double price) {
+        return product -> product.getPrice() == price;
+    }
+
+    private static Predicate<Product> getQuantityPredicate(int quantity) {
+        return product -> product.getQuantity() == quantity;
+    }
+
+    private static Predicate<Product> getRangePredicate(double lo, double hi) {
+        return product -> product.getPrice() > lo && product.getPrice() <= hi;
+    }
+
+    private static Comparator<Product> getPriceComp() {
+        return Comparator.comparing(Product::getPrice).reversed();
+    }
+
+    private void changeProductQuantityInTheList(String product, int quantity) {
+        for (Product currentProduct : this.productList) {
+            if (currentProduct.getLabel().equals(product)) {
+                currentProduct.setQuantity(quantity);
+                return;
+            }
+        }
     }
 
 }
