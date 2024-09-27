@@ -131,6 +131,9 @@ public class Instock implements ProductStock {
     public List<Product> getProductList() {
         return this.productList;
     }
+    public Map<String, Product> getProductByLabelMap() {
+        return this.productByLabelMap;
+    }
 
     private boolean isNotCorrect(int count) {
         return count < 0 || count > this.productByLabelMap.size();

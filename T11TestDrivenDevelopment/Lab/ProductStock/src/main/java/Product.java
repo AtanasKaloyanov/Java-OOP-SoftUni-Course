@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Product implements Comparable<Product> {
     public String label;
 
@@ -38,5 +40,18 @@ public class Product implements Comparable<Product> {
     @Override
     public int compareTo(Product o) {
         return this.label.compareTo(o.label);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        Product product = (Product) o;
+        return Double.compare(product.price, price) == 0 && quantity == product.quantity && Objects.equals(label, product.label);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(label, price, quantity);
     }
 }
