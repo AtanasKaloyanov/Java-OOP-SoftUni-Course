@@ -24,6 +24,8 @@ public class Constants {
 
     // Number of products - 3:
     static final int PRODUCT_COUNT_THREE = 3;
+    static final int PRODUCT_COUNT_TWO = 2;
+    static final int PRODUCT_COUNT_ONE = 1;
 
     // Changed quantity - 1000;
     static final int CHANGED_QUANTITY = 1000;

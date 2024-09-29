@@ -134,10 +134,11 @@ public class InstockTest {
     public void testFindForCorrectProduct() {
         int index = 0;
         Product actualProduct1 = this.instock.find(index++);
-        Assert.assertEquals(actualProduct1, this.product1);
         Product actualProduct2 = this.instock.find(index++);
-        Assert.assertEquals(actualProduct2, this.product2);
         Product actualProduct3 = this.instock.find(index);
+        
+        Assert.assertEquals(actualProduct1, this.product1);
+        Assert.assertEquals(actualProduct2, this.product2);
         Assert.assertEquals(actualProduct3, this.product3);
     }
 
@@ -205,15 +206,60 @@ public class InstockTest {
 
     // 10. findAllByPrice:
     @Test
-    public void testFindAllByPrice() {
-         Iterable<Product> testFind;
+    public void testFindAllByPriceForCorrectness() {
+        // 10.1. find non-existent product
+        Iterable<Product> expectedProducts1 = new ArrayList<>();
+        Iterable<Product> actualProducts1 = this.instock.findAllByPrice(Constants.NON_EXIST_PRODUCT_1_PRICE);
+        // 10.2. find existent product
+        Iterable<Product> expectedProducts2 = new ArrayList<>(List.of(this.product1));
+        Iterable<Product> actualProducts2 = this.instock.findAllByPrice(Constants.PRODUCT_1_PRICE);
+
+        Assert.assertEquals(expectedProducts1, actualProducts1);
+        Assert.assertEquals(expectedProducts2, actualProducts2);
     }
 
-    // 11. findMostExpensiveProducts:
+    @Test(expected = IllegalArgumentException.class)
+    public void testFirstFindMostExpensiveProductsWithNegativeCount() {
+        this.instock.findFirstMostExpensiveProducts(-1);
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testFirstFindMostExpensiveProductsWithTooBigCount() {
+        int tooBigCount = Constants.PRODUCT_COUNT_THREE + Constants.PRODUCT_COUNT_THREE;
+        this.instock.findFirstMostExpensiveProducts(tooBigCount);
+    }
+
+    @Test
+    public void testFirstFindMostExpensiveProductsCorrectness() {
+        Iterable<Product> expectedProducts1 = new ArrayList<>(List.of(this.product3, this.product2, this.product1));
+        Iterable<Product> actualProducts1 = this.instock.findFirstMostExpensiveProducts(Constants.PRODUCT_COUNT_THREE);
+        Iterable<Product> expectedProducts2 = new ArrayList<>(List.of(this.product3, this.product2));
+        Iterable<Product> actualProducts2 = this.instock.findFirstMostExpensiveProducts(Constants.PRODUCT_COUNT_TWO);
+        Iterable<Product> expectedProducts3 = new ArrayList<>(List.of(this.product3));
+        Iterable<Product> actualProducts3 = this.instock.findFirstMostExpensiveProducts(Constants.PRODUCT_COUNT_ONE);
+
+        Assert.assertEquals(expectedProducts1, actualProducts1);
+        Assert.assertEquals(expectedProducts2, actualProducts2);
+        Assert.assertEquals(expectedProducts3, actualProducts3);
+    }
 
     // 12. findAllByQuantity:
+    @Test
+    public void findAllByQuantityForCorrectness() {
+        Iterable<Product> expectedProducts0 = new ArrayList<>();
+        Iterable<Product> actualProducts0 = this.instock.findAllByQuantity(Constants.NON_EXIST_PRODUCT_1_QUANTITY);
+        Iterable<Product> expectedProducts1 = new ArrayList<>(List.of(this.product1));
+        Iterable<Product> actualProducts1 = this.instock.findAllByQuantity(Constants.PRODUCT_1_QUANTITY);
+        Iterable<Product> expectedProducts2 = new ArrayList<>(List.of(this.product2));
+        Iterable<Product> actualProducts2 = this.instock.findAllByQuantity(Constants.PRODUCT_2_QUANTITY);
+        Iterable<Product> expectedProducts3 = new ArrayList<>(List.of(this.product3));
+        Iterable<Product> actualProducts3 = this.instock.findAllByQuantity(Constants.PRODUCT_3_QUANTITY);
 
+        Assert.assertEquals(expectedProducts0, actualProducts0);
+        Assert.assertEquals(expectedProducts1, actualProducts1);
+        Assert.assertEquals(expectedProducts2, actualProducts2);
+        Assert.assertEquals(expectedProducts3, actualProducts3);
+    }
 
     // 13. iterator
     @Test
@@ -222,6 +268,7 @@ public class InstockTest {
         Product actualProduct1 = actualIter.next();
         Product actualProduct2 = actualIter.next();
         Product actualProduct3 = actualIter.next();
+
         Assert.assertEquals(this.product1, actualProduct1);
         Assert.assertEquals(this.product2, actualProduct2);
         Assert.assertEquals(this.product3, actualProduct3);
