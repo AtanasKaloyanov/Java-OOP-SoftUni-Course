@@ -13,18 +13,9 @@ public class TransactionImpl implements Comparable<TransactionImpl>, Transaction
         this.amount = amount;
     }
 
-    public int compareTo(TransactionImpl o) {
-        return Integer.compare(this.id, o.id);
-    }
-
     @Override
     public int getId() {
         return this.id;
-    }
-
-    @Override
-    public void changeStatus(TransactionStatus newStatus) {
-        this.status = newStatus;
     }
 
     @Override
@@ -36,4 +27,31 @@ public class TransactionImpl implements Comparable<TransactionImpl>, Transaction
     public double getAmount() {
         return this.amount;
     }
+
+    @Override
+    public String getFrom() {
+        return this.from;
+    }
+
+    @Override
+    public String getTo() {
+        return this.to;
+    }
+
+    @Override
+    public void setStatus(TransactionStatus newStatus) {
+        this.status = newStatus;
+    }
+
+    @Override
+    public int compareTo(TransactionImpl o) {
+        return Double.compare(o.amount, this.amount);
+    }
+
+    @Override
+    public String toString() {
+        return this.id + " " + this.status + " " + this.from + " " + this.to + " " + this.amount;
+    }
+
+
 }

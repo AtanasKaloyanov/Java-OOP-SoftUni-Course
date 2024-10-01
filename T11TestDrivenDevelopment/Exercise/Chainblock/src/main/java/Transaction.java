@@ -1,6 +1,8 @@
 public interface Transaction {
     int getId();
-    void changeStatus(TransactionStatus newStatus);
+    void setStatus(TransactionStatus newStatus);
     TransactionStatus getStatus();
     double getAmount();
+    String getFrom();
+    String getTo();
 }
