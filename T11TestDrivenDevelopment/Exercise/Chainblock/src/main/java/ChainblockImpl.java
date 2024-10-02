@@ -1,9 +1,10 @@
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class ChainblockImpl implements Chainblock {
     private Map<Integer, Transaction> transactionByIdMap = new HashMap<>();
-    private Map<TransactionStatus, Set<Transaction>> transactionSetByStatusMap = new HashMap<>();
 
     @Override
     public int getCount() {
@@ -12,18 +13,9 @@ public class ChainblockImpl implements Chainblock {
 
     @Override
     public void add(Transaction transaction) {
-        // 1. Contains check:
         int id = transaction.getId();
         transactionExistCheck(id);
-
-        // 2. Adding the transaction to both maps:
-        // 2.1. idMap adding:
         this.transactionByIdMap.put(id, transaction);
-        // 2.2. statusMap adding:
-        TransactionStatus status = transaction.getStatus();
-        Comparator<Transaction> amountComparator = compareByAmountReversed();
-        this.transactionSetByStatusMap.putIfAbsent(status, new TreeSet<>(amountComparator));
-        this.transactionSetByStatusMap.get(status).add(transaction);
     }
 
     @Override
@@ -40,29 +32,14 @@ public class ChainblockImpl implements Chainblock {
     @Override
     public void changeTransactionStatus(int id, TransactionStatus newStatus) {
         transactionDoesntExistCheck(id);
-        // 1. Change the element in the idMap:
         Transaction transaction = this.transactionByIdMap.get(id);
-        TransactionStatus transactionOldStatus = transaction.getStatus();
         transaction.setStatus(newStatus);
-        // 2. Change the element in the statusMap:
-        Set<Transaction> transactionSet =  this.transactionSetByStatusMap.get(transactionOldStatus);
-
-        for (Transaction currentTransaction : transactionSet) {
-            if (currentTransaction.getId() == id) {
-                currentTransaction.setStatus(newStatus);
-                break;
-            }
-        }
     }
 
     @Override
     public void removeTransactionById(int id) {
-        // 1. Existence check:
         this.transactionDoesntExistCheck(id);
-        // 2. Transaction removing from both map:
-        Transaction removedTransaction = this.transactionByIdMap.remove(id);
-        TransactionStatus removingStatus = removedTransaction.getStatus();
-        this.transactionSetByStatusMap.get(removingStatus).remove(removedTransaction);
+        this.transactionByIdMap.remove(id);
     }
 
     @Override
@@ -73,71 +50,120 @@ public class ChainblockImpl implements Chainblock {
 
     @Override
     public Iterable<Transaction> getByTransactionStatus(TransactionStatus status) {
-        return getTransactions(status);
+        List<Transaction> transactions = this.transactionByIdMap.values()
+                .stream()
+                .filter(getByStatusPredicate(status))
+                .sorted(amountReversedComp())
+                .collect(Collectors.toList());
+
+        isEmptyCheck(transactions);
+        return transactions;
     }
 
     @Override
     public Iterable<String> getAllSendersWithTransactionStatus(TransactionStatus status) {
-        Set<Transaction> transactions = getTransactions(status);
-        return transactions.stream()
-                .map(Transaction::getFrom)
-                .collect(Collectors.toList());
+        Function<Transaction, String> mapToSender = Transaction::getFrom;
+        return getPeopleWithStatusTrans(status, mapToSender);
     }
 
     @Override
     public Iterable<String> getAllReceiversWithTransactionStatus(TransactionStatus status) {
-        Set<Transaction> transactions = getTransactions(status);
-        return transactions.stream()
-                .map(Transaction::getTo)
-                .collect(Collectors.toList());
+        Function<Transaction, String> mapToReceiver = Transaction::getTo;
+        return getPeopleWithStatusTrans(status, mapToReceiver);
     }
 
     @Override
     public Iterable<Transaction> getAllOrderedByAmountDescendingThenById() {
-        return this.transactionByIdMap.values().stream()
+        return this.transactionByIdMap.values()
+                .stream()
                 .sorted(getAmountReversedAndIdComp())
                 .collect(Collectors.toList());
     }
 
     @Override
     public Iterable<Transaction> getBySenderOrderedByAmountDescending(String sender) {
-        return this.transactionByIdMap.values();
-               // .removeIf( (transaction) -> transaction.getFrom().equals(sender))
-
-
+        Predicate<Transaction> senderPredicate = getBySenderPredicate(sender);
+        return getTransactionsBy(senderPredicate);
     }
 
     @Override
     public Iterable<Transaction> getByReceiverOrderedByAmountThenById(String receiver) {
-        return null;
+        Predicate<Transaction> receiverPredicate = getByReceiverPredicate(receiver);
+        return getTransactionsBy(receiverPredicate);
     }
 
     @Override
     public Iterable<Transaction> getByTransactionStatusAndMaximumAmount(TransactionStatus status, double amount) {
-        return null;
+       return this.transactionByIdMap.values()
+               .stream()
+               .filter(maxAmountPredicate(amount))
+               .sorted(amountReversedComp())
+               .collect(Collectors.toList());
     }
 
     @Override
     public Iterable<Transaction> getBySenderAndMinimumAmountDescending(String sender, double amount) {
-        return null;
+        List<Transaction> transactions = this.transactionByIdMap.values()
+                .stream()
+                .filter(getBtSenderAndAmountPredicate(sender, amount))
+                .collect(Collectors.toList());
+
+        isEmptyCheck(transactions);
+        return transactions;
     }
 
     @Override
     public Iterable<Transaction> getByReceiverAndAmountRange(String receiver, double lo, double hi) {
-        return null;
+        return this.transactionByIdMap.values().stream()
+                .filter(getByReceiverAndAmountPredicate(receiver, lo, hi))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Iterable<Transaction> getAllInAmountRange(double lo, double hi) {
-        return null;
+        return this.transactionByIdMap.values()
+                .stream()
+                .filter(getAmountPredicate(lo, hi))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Iterator<Transaction> iterator() {
-        return null;
+        return this.transactionByIdMap.values().iterator();
     }
 
-    private static Comparator<Transaction> compareByAmountReversed() {
+    // Predicates:
+    private static Predicate<Transaction> getByStatusPredicate(TransactionStatus status) {
+        return (trans) -> trans.getStatus() == status;
+    }
+
+    private static Predicate<Transaction> getBySenderPredicate(String sender) {
+        return (transaction) -> transaction.getFrom().equals(sender);
+    }
+
+    private static Predicate<Transaction> getByReceiverPredicate(String receiver) {
+        return (transaction) -> transaction.getTo().equals(receiver);
+    }
+
+    private static Predicate<Transaction> maxAmountPredicate(double amount) {
+        return (trans) -> trans.getAmount() <= amount;
+    }
+
+    private static Predicate<Transaction> getAmountPredicate(double lo, double hi) {
+        return (amount) -> amount.getAmount() >= lo && amount.getAmount() < hi;
+    }
+
+    private static Predicate<Transaction> getByReceiverAndAmountPredicate(String receiver, double lo, double hi) {
+        return (transaction) -> transaction.getFrom().equals(receiver) &&
+                transaction.getAmount() >= lo && transaction.getAmount() < hi;
+    }
+
+    private static Predicate<Transaction> getBtSenderAndAmountPredicate(String sender, double amount) {
+        return (trans) -> trans.getFrom().equals(sender) && trans.getAmount() > amount;
+    }
+
+    // Comparators:
+    private static Comparator<Transaction> amountReversedComp() {
         return Comparator.comparingDouble(Transaction::getAmount).reversed();
     }
 
@@ -146,6 +172,7 @@ public class ChainblockImpl implements Chainblock {
                 .thenComparing(Transaction::getId);
     }
 
+    // Checked exceptions:
     private void transactionExistCheck(int id) {
         if (this.contains(id)) {
             throw new IllegalArgumentException("The transaction is already saved");
@@ -158,15 +185,37 @@ public class ChainblockImpl implements Chainblock {
         }
     }
 
-    private static void isEmptyCheck(Set<Transaction> transactions) {
+    private static void isEmptyCheck(List<Transaction> transactions) {
         if (transactions.isEmpty()) {
-            throw new IllegalArgumentException("There are no transactions with this status");
+            throw new IllegalArgumentException("There are no such a transactions.");
         }
     }
 
-    private Set<Transaction> getTransactions(TransactionStatus status) {
-        Set<Transaction> transactions = this.transactionSetByStatusMap.get(status);
-        isEmptyCheck(transactions);
+    // Another repeatable logic:
+    private List<String> getPeopleWithStatusTrans(TransactionStatus status, Function<Transaction, String> mapToString) {
+        List<String> transactions = this.transactionByIdMap.values()
+                .stream()
+                .filter(getByStatusPredicate(status))
+                .map(mapToString)
+                .collect(Collectors.toList());
+
+        if (transactions.isEmpty()) {
+            throw new IllegalArgumentException("There are no such transactions.");
+        }
+
         return transactions;
+    }
+
+    private List<Transaction> getTransactionsBy(Predicate<Transaction> personPredicate) {
+        List<Transaction> result =  this.transactionByIdMap.values().stream()
+                .filter(personPredicate)
+                .sorted(amountReversedComp())
+                .collect(Collectors.toList());
+
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("There are no transaction related to this person.");
+        }
+
+        return result;
     }
 }
