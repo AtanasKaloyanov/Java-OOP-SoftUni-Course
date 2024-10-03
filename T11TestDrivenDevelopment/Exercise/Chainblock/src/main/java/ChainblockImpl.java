@@ -132,6 +132,11 @@ public class ChainblockImpl implements Chainblock {
         return this.transactionByIdMap.values().iterator();
     }
 
+    // Getter:
+    public Map<Integer, Transaction> getTransactionByIdMap() {
+        return this.transactionByIdMap;
+    }
+
     // Predicates:
     private static Predicate<Transaction> getByStatusPredicate(TransactionStatus status) {
         return (trans) -> trans.getStatus() == status;
@@ -196,6 +201,7 @@ public class ChainblockImpl implements Chainblock {
         List<String> transactions = this.transactionByIdMap.values()
                 .stream()
                 .filter(getByStatusPredicate(status))
+                .sorted(amountReversedComp())
                 .map(mapToString)
                 .collect(Collectors.toList());
 

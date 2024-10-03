@@ -6,9 +6,9 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         Map<Integer, Transaction> map1 = new HashMap<>();
-        Transaction transaction1 = new TransactionImpl(1, TransactionStatus.SUCCESSFUL, "A", "A", 1.0);
-        Transaction transaction2 = new TransactionImpl(2, TransactionStatus.SUCCESSFUL, "A", "A", 1.0);
-        Transaction transaction3 = new TransactionImpl(3, TransactionStatus.SUCCESSFUL, "A", "A", 1.0);
+        Transaction transaction1 = new TransactionImpl(1, TransactionStatus.SUCCESSFUL, "Example.A", "Example.A", 1.0);
+        Transaction transaction2 = new TransactionImpl(2, TransactionStatus.SUCCESSFUL, "Example.A", "Example.A", 1.0);
+        Transaction transaction3 = new TransactionImpl(3, TransactionStatus.SUCCESSFUL, "Example.A", "Example.A", 1.0);
         map1.put(1, transaction1);
         map1.put(2, transaction2);
         map1.put(3, transaction3);
