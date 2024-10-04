@@ -301,8 +301,47 @@ public class ChainBlockTest {
     }
 
     // 16. getByReceiverAndAmountRange
-    
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetByReceiverAndAmountRangeShouldThrow() {
+        double lowerBound = Constants.AMOUNT3;
+        double upperBound = Constants.AMOUNT3;
+        this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER1, lowerBound, upperBound);
+    }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetByReceiverAndAmountRangeShouldThrow2() {
+        double lowerBound = Constants.AMOUNT2;
+        double upperBound = Constants.AMOUNT2;
+        this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER1, lowerBound, upperBound);
+    }
+
+    @Test
+    public void testGetByReceiverAndAmountRange() {
+        Iterable<Transaction> expected1 = new ArrayList<>(List.of(this.transaction1));
+        Iterable<Transaction> actual1 = this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER1, Constants.AMOUNT1, Constants.AMOUNT1 + Constants.ONE);
+        Iterable<Transaction> expected2 = new ArrayList<>(List.of(this.transaction2));
+        Iterable<Transaction> actual2 = this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER2, Constants.AMOUNT2, Constants.AMOUNT2 + Constants.ONE);
+        Iterable<Transaction> expected3 = new ArrayList<>(List.of(this.transaction3));
+        Iterable<Transaction> actual3 = this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER3, Constants.AMOUNT3, Constants.AMOUNT3 + Constants.ONE);
+        Iterable<Transaction> expected4 = new ArrayList<>(List.of(this.transaction4));
+        Iterable<Transaction> actual4 = this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER4, Constants.AMOUNT4, Constants.AMOUNT4 + Constants.ONE);
+
+        Transaction transaction5 = new TransactionImpl(
+                Constants.ID5, TransactionStatus.UNAUTHORIZED, Constants.SENDER3, Constants.RECEIVER4, Constants.AMOUNT2);
+        Transaction transaction6 = new TransactionImpl(
+                Constants.ID6, TransactionStatus.UNAUTHORIZED, Constants.SENDER3, Constants.RECEIVER4, Constants.AMOUNT3);
+        this.chainblock.add(transaction5);
+        this.chainblock.add(transaction6);
+
+        Iterable<Transaction> expected5 = new ArrayList<>(List.of(transaction6, this.transaction4, transaction5));
+        Iterable<Transaction> actual5 = this.chainblock.getByReceiverAndAmountRange(Constants.RECEIVER4, Constants.AMOUNT2, Constants.AMOUNT3 + Constants.ONE);
+
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+        Assert.assertEquals(expected3, actual3);
+        Assert.assertEquals(expected4, actual4);
+        Assert.assertEquals(expected5, actual5);
+    }
 
     // 17. getAllInAmountRange
     @Test(expected = IllegalArgumentException.class)
@@ -374,7 +413,7 @@ public class ChainBlockTest {
 
     // 18. iterator
     @Test
-     public void testIterator() {
+    public void testIterator() {
         Iterator<Transaction> expectedIter = this.chainblock.iterator();
         List<Transaction> expectedTrans = new ArrayList<>(this.chainblock.getTransactionByIdMap().values());
         List<Transaction> actualTrans = new ArrayList<>();
@@ -393,14 +432,6 @@ public class ChainBlockTest {
     public Iterable<Transaction> getByReceiverAndAmountRange(String receiver, double lo, double hi) {
         return this.transactionByIdMap.values().stream()
                 .filter(getByReceiverAndAmountPredicate(receiver, lo, hi))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Iterable<Transaction> getAllInAmountRange(double lo, double hi) {
-        return this.transactionByIdMap.values()
-                .stream()
-                .filter(getAmountPredicate(lo, hi))
                 .collect(Collectors.toList());
     }
 

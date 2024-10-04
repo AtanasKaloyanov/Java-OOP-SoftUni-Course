@@ -53,7 +53,7 @@ public class ChainblockImpl implements Chainblock {
         List<Transaction> transactions = this.transactionByIdMap.values()
                 .stream()
                 .filter(getByStatusPredicate(status))
-                .sorted(amountReversedComp())
+                .sorted(getAmountReversedComp())
                 .collect(Collectors.toList());
 
         isEmptyCheck(transactions);
@@ -97,7 +97,7 @@ public class ChainblockImpl implements Chainblock {
         return this.transactionByIdMap.values()
                 .stream()
                 .filter(getByStatusAndMaxAmountPredicate(status, amount))
-                .sorted(amountReversedComp())
+                .sorted(getAmountReversedComp())
                 .collect(Collectors.toList());
     }
 
@@ -117,6 +117,7 @@ public class ChainblockImpl implements Chainblock {
         List<Transaction> transactions = this.transactionByIdMap.values()
                 .stream()
                 .filter(getByReceiverAndAmountPredicate(receiver, lo, hi))
+                .sorted(getAmountReversedComp())
                 .collect(Collectors.toList());
 
         isEmptyCheck(transactions);
@@ -176,7 +177,7 @@ public class ChainblockImpl implements Chainblock {
     }
 
     // Comparators:
-    private static Comparator<Transaction> amountReversedComp() {
+    private static Comparator<Transaction> getAmountReversedComp() {
         return Comparator.comparingDouble(Transaction::getAmount).reversed();
     }
 
@@ -209,7 +210,7 @@ public class ChainblockImpl implements Chainblock {
         List<String> transactions = this.transactionByIdMap.values()
                 .stream()
                 .filter(getByStatusPredicate(status))
-                .sorted(amountReversedComp())
+                .sorted(getAmountReversedComp())
                 .map(mapToString)
                 .collect(Collectors.toList());
 
@@ -223,7 +224,7 @@ public class ChainblockImpl implements Chainblock {
     private List<Transaction> getTransactionsBy(Predicate<Transaction> personPredicate) {
         List<Transaction> result = this.transactionByIdMap.values().stream()
                 .filter(personPredicate)
-                .sorted(amountReversedComp())
+                .sorted(getAmountReversedComp())
                 .collect(Collectors.toList());
 
         if (result.isEmpty()) {
