@@ -2,10 +2,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ChainBlockTest {
@@ -248,7 +245,7 @@ public class ChainBlockTest {
     }
 
     @Test
-    public void testGetByReceiverOrderedByAmountDescending() {
+    public void testGetByReceiverOrderedByAmountDescendingThenById() {
         Transaction transactionWithSameReceiver = new TransactionImpl(
                 Constants.ID6, TransactionStatus.UNAUTHORIZED, Constants.SENDER4, Constants.RECEIVER4, Constants.AMOUNT3);
         Transaction transactionWithSameReceiver2 = new TransactionImpl(
@@ -261,27 +258,136 @@ public class ChainBlockTest {
         Assert.assertEquals(expectedTransactions, actualTransactions);
     }
 
+    // 14. testGetByTransactionStatusAndMaximumAmount
+    @Test
+    public void testGetByTransactionStatusAndMaximumAmount() {
+        Iterable<Transaction> expectedTrans1 = new ArrayList<>();
+        Iterable<Transaction> actualTrans1 = this.chainblock
+                .getByTransactionStatusAndMaximumAmount(TransactionStatus.UNAUTHORIZED, Constants.AMOUNT1);
+        Iterable<Transaction> expectedTrans2 = new ArrayList<>(List.of(this.transaction4, this.transaction1));
+        Iterable<Transaction> actualTrans2 = this.chainblock
+                .getByTransactionStatusAndMaximumAmount(TransactionStatus.SUCCESSFUL, Constants.AMOUNT4);
+
+        Assert.assertEquals(expectedTrans1, actualTrans1);
+        Assert.assertEquals(expectedTrans2, actualTrans2);
+    }
+
+    // 15. getBySenderAndMinimumAmountDescending
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBySenderAndMinimumAmountDescendingWithLessAmountShouldThrow() {
+        this.chainblock.getBySenderAndMinimumAmountDescending(Constants.SENDER1, Constants.AMOUNT1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetBySenderAndMinimumAmountDescendingWithLessAmountShouldThrow2() {
+        this.chainblock.getBySenderAndMinimumAmountDescending(Constants.SENDER2, Constants.AMOUNT2);
+    }
+
+    @Test
+    public void testGetBySenderAndMinimumAmountDescending() {
+        Iterable<Transaction> expectedTrans1 = new ArrayList<>(List.of(this.transaction1));
+        Iterable<Transaction> actualTrans1 = this.chainblock.getBySenderAndMinimumAmountDescending(Constants.SENDER1, Constants.AMOUNT1 - Constants.ONE);
+        Iterable<Transaction> expectedTrans2 = new ArrayList<>(List.of(this.transaction2));
+        Iterable<Transaction> actualTrans2 = this.chainblock.getBySenderAndMinimumAmountDescending(Constants.SENDER2, Constants.AMOUNT2 - Constants.ONE);
+        Iterable<Transaction> expectedTrans3 = new ArrayList<>(List.of(this.transaction3));
+        Iterable<Transaction> actualTrans3 = this.chainblock.getBySenderAndMinimumAmountDescending(Constants.SENDER3, Constants.AMOUNT3 - Constants.ONE);
+        Iterable<Transaction> expectedTrans4 = new ArrayList<>(List.of(this.transaction4));
+        Iterable<Transaction> actualTrans4 = this.chainblock.getBySenderAndMinimumAmountDescending(Constants.SENDER4, Constants.AMOUNT4 - Constants.ONE);
+
+        Assert.assertEquals(expectedTrans1, actualTrans1);
+        Assert.assertEquals(expectedTrans2, actualTrans2);
+        Assert.assertEquals(expectedTrans3, actualTrans3);
+        Assert.assertEquals(expectedTrans4, actualTrans4);
+    }
+
+    // 16. getByReceiverAndAmountRange
+    
+
+
+    // 17. getAllInAmountRange
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAllInAmountRangeOutOfRangeShouldThrow() {
+        double lowerBound = Constants.AMOUNT3;
+        double upperBound = Constants.AMOUNT3;
+        this.chainblock.getAllInAmountRange(lowerBound, upperBound);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAllInAmountRangeOutOfRangeShouldThrow2() {
+        double lowerBound = Constants.AMOUNT2;
+        double upperBound = Constants.AMOUNT2;
+        this.chainblock.getAllInAmountRange(lowerBound, upperBound);
+    }
+
+    @Test
+    public void testGetAllInAmountRange() {
+        Iterable<Transaction> expected1 = new ArrayList<>(List.of(this.transaction2));
+        double lowerBound1 = Constants.AMOUNT2;
+        double upperBound1 = Constants.AMOUNT1;
+        Iterable<Transaction> actual1 = this.chainblock.getAllInAmountRange(lowerBound1, upperBound1);
+
+        Iterable<Transaction> expected2 = new ArrayList<>(List.of(this.transaction1, this.transaction2));
+        double lowerBound2 = Constants.AMOUNT2;
+        double upperBound2 = Constants.AMOUNT4;
+        Iterable<Transaction> actual2 = this.chainblock.getAllInAmountRange(lowerBound2, upperBound2);
+
+        Iterable<Transaction> expected3 = new ArrayList<>(List.of(this.transaction4, this.transaction1, this.transaction2));
+        double lowerBound3 = Constants.AMOUNT2;
+        double upperBound3 = Constants.AMOUNT3;
+        Iterable<Transaction> actual3 = this.chainblock.getAllInAmountRange(lowerBound3, upperBound3);
+
+        Iterable<Transaction> expected4 = new ArrayList<>(List.of(this.transaction3, this.transaction4, this.transaction1, this.transaction2));
+        double lowerBound4 = Constants.AMOUNT2;
+        double upperBound4 = Constants.AMOUNT3 + Constants.ONE;
+        Iterable<Transaction> actual4 = this.chainblock.getAllInAmountRange(lowerBound4, upperBound4);
+
+        Iterable<Transaction> expected5 = new ArrayList<>(List.of(this.transaction3, this.transaction4, this.transaction1));
+        double lowerBound5 = Constants.AMOUNT2 + Constants.ONE;
+        double upperBound5 = Constants.AMOUNT3 + Constants.ONE;
+        Iterable<Transaction> actual5 = this.chainblock.getAllInAmountRange(lowerBound5, upperBound5);
+
+        Iterable<Transaction> expected6 = new ArrayList<>(List.of(this.transaction4, this.transaction1));
+        double lowerBound6 = Constants.AMOUNT2 + Constants.ONE;
+        double upperBound6 = Constants.AMOUNT3;
+        Iterable<Transaction> actual6 = this.chainblock.getAllInAmountRange(lowerBound6, upperBound6);
+
+        Transaction transaction5 = new TransactionImpl(
+                Constants.ID5, TransactionStatus.UNAUTHORIZED, Constants.SENDER4, Constants.RECEIVER4, Constants.AMOUNT4);
+        Transaction transaction6 = new TransactionImpl(
+                Constants.ID6, TransactionStatus.UNAUTHORIZED, Constants.SENDER4, Constants.RECEIVER4, Constants.AMOUNT1);
+        this.chainblock.add(transaction5);
+        this.chainblock.add(transaction6);
+
+        Iterable<Transaction> expected7 = new ArrayList<>(List.of(this.transaction4, transaction5, this.transaction1, transaction6));
+        double lowerBound7 = Constants.AMOUNT2 + Constants.ONE;
+        double upperBound7 = Constants.AMOUNT3;
+        Iterable<Transaction> actual7 = this.chainblock.getAllInAmountRange(lowerBound7, upperBound7);
+
+        Assert.assertEquals(expected1, actual1);
+        Assert.assertEquals(expected2, actual2);
+        Assert.assertEquals(expected3, actual3);
+        Assert.assertEquals(expected4, actual4);
+        Assert.assertEquals(expected5, actual5);
+        Assert.assertEquals(expected6, actual6);
+        Assert.assertEquals(expected7, actual7);
+    }
+
+    // 18. iterator
+    @Test
+     public void testIterator() {
+        Iterator<Transaction> expectedIter = this.chainblock.iterator();
+        List<Transaction> expectedTrans = new ArrayList<>(this.chainblock.getTransactionByIdMap().values());
+        List<Transaction> actualTrans = new ArrayList<>();
+
+        while (expectedIter.hasNext()) {
+            Transaction currentTrans = expectedIter.next();
+            actualTrans.add(currentTrans);
+        }
+
+        Assert.assertEquals(expectedTrans, actualTrans);
+    }
     /*
 
-    @Override
-    public Iterable<Transaction> getByTransactionStatusAndMaximumAmount(TransactionStatus status, double amount) {
-       return this.transactionByIdMap.values()
-               .stream()
-               .filter(maxAmountPredicate(amount))
-               .sorted(amountReversedComp())
-               .collect(Collectors.toList());
-    }
-
-    @Override
-    public Iterable<Transaction> getBySenderAndMinimumAmountDescending(String sender, double amount) {
-        List<Transaction> transactions = this.transactionByIdMap.values()
-                .stream()
-                .filter(getBtSenderAndAmountPredicate(sender, amount))
-                .collect(Collectors.toList());
-
-        isEmptyCheck(transactions);
-        return transactions;
-    }
 
     @Override
     public Iterable<Transaction> getByReceiverAndAmountRange(String receiver, double lo, double hi) {
@@ -298,10 +404,6 @@ public class ChainBlockTest {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public Iterator<Transaction> iterator() {
-        return this.transactionByIdMap.values().iterator();
-    }
      */
 
     private static List<Transaction> getActualTransactions(Map<Integer, Transaction> actualTransactionsById) {

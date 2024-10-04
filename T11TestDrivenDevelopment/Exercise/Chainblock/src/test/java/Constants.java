@@ -42,6 +42,6 @@ public class Constants {
 
     // Another:
     public static final int ID6 = 6;
-
+    public static final int ONE = 1;
 
 }

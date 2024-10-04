@@ -94,11 +94,11 @@ public class ChainblockImpl implements Chainblock {
 
     @Override
     public Iterable<Transaction> getByTransactionStatusAndMaximumAmount(TransactionStatus status, double amount) {
-       return this.transactionByIdMap.values()
-               .stream()
-               .filter(maxAmountPredicate(amount))
-               .sorted(amountReversedComp())
-               .collect(Collectors.toList());
+        return this.transactionByIdMap.values()
+                .stream()
+                .filter(getByStatusAndMaxAmountPredicate(status, amount))
+                .sorted(amountReversedComp())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -114,17 +114,25 @@ public class ChainblockImpl implements Chainblock {
 
     @Override
     public Iterable<Transaction> getByReceiverAndAmountRange(String receiver, double lo, double hi) {
-        return this.transactionByIdMap.values().stream()
+        List<Transaction> transactions = this.transactionByIdMap.values()
+                .stream()
                 .filter(getByReceiverAndAmountPredicate(receiver, lo, hi))
                 .collect(Collectors.toList());
+
+        isEmptyCheck(transactions);
+        return transactions;
     }
 
     @Override
     public Iterable<Transaction> getAllInAmountRange(double lo, double hi) {
-        return this.transactionByIdMap.values()
+        List<Transaction> transactions = this.transactionByIdMap.values()
                 .stream()
                 .filter(getAmountPredicate(lo, hi))
+                .sorted(getAmountReversedAndIdComp())
                 .collect(Collectors.toList());
+
+        isEmptyCheck(transactions);
+        return transactions;
     }
 
     @Override
@@ -150,8 +158,8 @@ public class ChainblockImpl implements Chainblock {
         return (transaction) -> transaction.getTo().equals(receiver);
     }
 
-    private static Predicate<Transaction> maxAmountPredicate(double amount) {
-        return (trans) -> trans.getAmount() <= amount;
+    private static Predicate<Transaction> getByStatusAndMaxAmountPredicate(TransactionStatus status, double amount) {
+        return (trans) -> trans.getStatus() == status && trans.getAmount() <= amount;
     }
 
     private static Predicate<Transaction> getAmountPredicate(double lo, double hi) {
@@ -159,7 +167,7 @@ public class ChainblockImpl implements Chainblock {
     }
 
     private static Predicate<Transaction> getByReceiverAndAmountPredicate(String receiver, double lo, double hi) {
-        return (transaction) -> transaction.getFrom().equals(receiver) &&
+        return (transaction) -> transaction.getTo().equals(receiver) &&
                 transaction.getAmount() >= lo && transaction.getAmount() < hi;
     }
 
@@ -213,7 +221,7 @@ public class ChainblockImpl implements Chainblock {
     }
 
     private List<Transaction> getTransactionsBy(Predicate<Transaction> personPredicate) {
-        List<Transaction> result =  this.transactionByIdMap.values().stream()
+        List<Transaction> result = this.transactionByIdMap.values().stream()
                 .filter(personPredicate)
                 .sorted(amountReversedComp())
                 .collect(Collectors.toList());
